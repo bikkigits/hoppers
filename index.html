@@ -17,28 +17,53 @@
   <title>Hoppers</title>
 
   <style>
-    /* Premium Splash Screen CSS */
-    body, html { margin: 0; padding: 0; background-color: #fcfcfc; height: 100%; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .loader-container { text-align: center; }
-    .spinner { width: 60px; height: 60px; border: 6px solid #ffe0b2; border-top: 6px solid #FF5722; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .title { color: #FF5722; font-size: 24px; font-weight: bold; letter-spacing: 2px; margin-bottom: 5px; }
-    .subtitle { color: #757575; font-size: 14px; }
+    /* Premium Bouncing Map Pin Splash Screen */
+    body, html { margin: 0; padding: 0; background-color: #ffffff; height: 100%; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    .splash-container { text-align: center; }
+    
+    /* Animation container */
+    .icon-container { position: relative; width: 80px; height: 80px; margin: 0 auto 20px auto; }
+    
+    /* CSS Map Pin */
+    .pin { width: 30px; height: 30px; background-color: #FF5722; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); position: absolute; top: 15px; left: 25px; animation: bounce 0.6s infinite alternate cubic-bezier(0.5, 0.05, 1, 0.5); }
+    .pin::after { content: ''; width: 12px; height: 12px; background-color: #fff; border-radius: 50%; position: absolute; top: 9px; left: 9px; }
+    
+    /* Pin Shadow */
+    .shadow { width: 20px; height: 5px; background-color: rgba(0,0,0,0.2); border-radius: 50%; position: absolute; bottom: 10px; left: 30px; animation: scale 0.6s infinite alternate cubic-bezier(0.5, 0.05, 1, 0.5); }
+    
+    /* Keyframes for Hop Effect */
+    @keyframes bounce { from { top: 15px; } to { top: -5px; } }
+    @keyframes scale { from { transform: scale(1); opacity: 0.2; } to { transform: scale(0.5); opacity: 0.6; } }
+    
+    /* Text Styling */
+    .title { color: #FF5722; font-size: 28px; font-weight: 800; letter-spacing: 3px; margin-bottom: 8px; text-transform: uppercase; }
+    .subtitle { color: #757575; font-size: 14px; font-weight: 500; letter-spacing: 1px; }
+    
+    /* Animated Loading Dots */
+    .loading-dots:after { content: '.'; animation: dots 1.5s steps(5, end) infinite; }
+    @keyframes dots { 0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); } 40% { color: #757575; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); } 60% { text-shadow: .25em 0 0 #757575, .5em 0 0 rgba(0,0,0,0); } 80%, 100% { text-shadow: .25em 0 0 #757575, .5em 0 0 #757575; } }
   </style>
 </head>
 <body>
-  <!-- Yeh screen tab tak dikhegi jab tak Flutter load nahi ho jata -->
-  <div class="loader-container" id="splash-screen">
-    <div class="spinner"></div>
+  
+  <div class="splash-container" id="splash-screen">
+    <div class="icon-container">
+      <div class="pin"></div>
+      <div class="shadow"></div>
+    </div>
     <div class="title">HOPPERS</div>
-    <div class="subtitle">Loading Pujo Map...</div>
+    <div class="subtitle">Navigating Pujo<span class="loading-dots"></span></div>
   </div>
 
   <script>
-    // Flutter load hone ke baad splash screen ko hide karne ka script
+    // Smooth Fade-out when Flutter App finishes loading
     window.addEventListener('flutter-first-frame', function() {
       var splash = document.getElementById('splash-screen');
-      if(splash) { splash.remove(); }
+      if(splash) {
+        splash.style.opacity = '0';
+        splash.style.transition = 'opacity 0.6s ease-out';
+        setTimeout(() => splash.remove(), 600);
+      }
     });
   </script>
 
