@@ -1,57 +1,58 @@
 [
-  { "id": "sk_1", "name": "Ekdalia Evergreen (South)", "lat": 22.5280, "lng": 88.3685, "category": "pandal" },
-  { "id": "sk_2", "name": "Singhi Park (South)", "lat": 22.5295, "lng": 88.3670, "category": "pandal" },
-  { "id": "sk_3", "name": "Deshapriya Park (South)", "lat": 22.5180, "lng": 88.3490, "category": "pandal" },
-  { "id": "sk_4", "name": "Mudiali Club (South)", "lat": 22.5115, "lng": 88.3460, "category": "pandal" },
-  { "id": "sk_5", "name": "Maddox Square (South)", "lat": 22.5312, "lng": 88.3582, "category": "pandal" },
-  { "id": "sk_6", "name": "Naktala Udayan Sangha (South)", "lat": 22.4850, "lng": 88.3700, "category": "pandal" },
-
-  { "id": "nk_1", "name": "Bagbazar Sarbojanin (North)", "lat": 22.6033, "lng": 88.3638, "category": "pandal" },
-  { "id": "nk_2", "name": "Kumartuli Park (North)", "lat": 22.5995, "lng": 88.3625, "category": "pandal" },
-  { "id": "nk_3", "name": "Hatibagan Sarbojanin (North)", "lat": 22.5960, "lng": 88.3670, "category": "pandal" },
-  { "id": "nk_4", "name": "Tala Prattoy (North)", "lat": 22.6065, "lng": 88.3755, "category": "pandal" },
-  { "id": "nk_5", "name": "Sovabazar Rajbari (North)", "lat": 22.5982, "lng": 88.3645, "category": "pandal" },
-  { "id": "nk_6", "name": "Ahiritola Sarbojanin (North)", "lat": 22.5950, "lng": 88.3585, "category": "pandal" },
-
-  { "id": "ck_1", "name": "Santosh Mitra Square (Central)", "lat": 22.5650, "lng": 88.3620, "category": "pandal" },
-  { "id": "ck_2", "name": "College Square (Central)", "lat": 22.5730, "lng": 88.3635, "category": "pandal" },
-  { "id": "ck_3", "name": "Mohammad Ali Park (Central)", "lat": 22.5760, "lng": 88.3590, "category": "pandal" },
-  { "id": "ck_4", "name": "Sealdah Athletic Club (Central)", "lat": 22.5670, "lng": 88.3700, "category": "pandal" },
-
-  { "id": "sl_1", "name": "FD Block Pandal (Salt Lake)", "lat": 22.5950, "lng": 88.4110, "category": "pandal" },
-
-  { "id": "toilet_1", "name": "KMC Toilet (Gariahat)", "lat": 22.5265, "lng": 88.3660, "category": "toilet" },
-  { "id": "toilet_2", "name": "Sulabh Shauchalaya (Deshapriya)", "lat": 22.5170, "lng": 88.3485, "category": "toilet" },
-  { "id": "toilet_3", "name": "Ahiritola Ghat Public Toilet", "lat": 22.5945, "lng": 88.3570, "category": "toilet" },
-  { "id": "toilet_4", "name": "College Street KMC Toilet", "lat": 22.5720, "lng": 88.3630, "category": "toilet" },
-  { "id": "toilet_5", "name": "Salt Lake Stadium Public Utility", "lat": 22.5695, "lng": 88.4040, "category": "toilet" },
-
-  { "id": "police_1", "name": "Gariahat Police Station", "lat": 22.5270, "lng": 88.3655, "category": "police" },
-  { "id": "police_2", "name": "Shyambazar Traffic Booth", "lat": 22.6020, "lng": 88.3730, "category": "police" },
-  { "id": "police_3", "name": "Central Avenue Police Assistance", "lat": 22.5750, "lng": 88.3600, "category": "police" },
-  { "id": "police_4", "name": "Salt Lake Sector V Police Camp", "lat": 22.5725, "lng": 88.4315, "category": "police" },
-
-  { "id": "gate_1", "name": "Kalighat Metro Gate", "lat": 22.5185, "lng": 88.3450, "category": "gate" },
-  { "id": "gate_2", "name": "Shyambazar Metro Gate 1", "lat": 22.6015, "lng": 88.3720, "category": "gate" },
-  { "id": "gate_3", "name": "Mahatma Gandhi Road Metro Gate", "lat": 22.5780, "lng": 88.3585, "category": "gate" },
-  { "id": "gate_4", "name": "Central Metro Station Entry", "lat": 22.5680, "lng": 88.3575, "category": "gate" },
-
-  { "id": "parking_1", "name": "Gariahat Mall Safe Parking", "lat": 22.5275, "lng": 88.3660, "category": "parking" },
-  { "id": "parking_2", "name": "Bagbazar School Ground Parking", "lat": 22.6045, "lng": 88.3655, "category": "parking" },
-  { "id": "parking_3", "name": "College Square Parking Zone", "lat": 22.5740, "lng": 88.3645, "category": "parking" },
-  { "id": "parking_4", "name": "Salt Lake City Centre Parking", "lat": 22.5850, "lng": 88.4045, "category": "parking" },
-
-  { "id": "food_v1", "name": "Gupta Brothers (Ballygunge - Pure Veg)", "lat": 22.5268, "lng": 88.3642, "category": "veg_restaurant" },
-  { "id": "food_v2", "name": "Balaram Mullick (Shyambazar - Veg Sweets)", "lat": 22.5970, "lng": 88.3650, "category": "veg_restaurant" },
-  { "id": "food_v3", "name": "Haldiram's (Central / Esplanade)", "lat": 22.5655, "lng": 88.3520, "category": "veg_restaurant" },
-  { "id": "food_v4", "name": "The Vedica Cafe (South Veg)", "lat": 22.5200, "lng": 88.3500, "category": "veg_restaurant" },
-
-  { "id": "food_nv1", "name": "6 Ballygunge Place (Bengali Non-Veg)", "lat": 22.5265, "lng": 88.3650, "category": "nonveg_restaurant" },
-  { "id": "food_nv2", "name": "Arsalan (Gariahat)", "lat": 22.5255, "lng": 88.3665, "category": "nonveg_restaurant" },
-  { "id": "food_nv3", "name": "Golbari (Shyambazar Kosha Mangsho)", "lat": 22.6025, "lng": 88.3735, "category": "nonveg_restaurant" },
-  { "id": "food_nv4", "name": "Aminia (Central / Esplanade)", "lat": 22.5640, "lng": 88.3530, "category": "nonveg_restaurant" },
-
-  { "id": "bar_1", "name": "Monkey Bar (Camac St)", "lat": 22.5398, "lng": 88.3533, "category": "bar" },
-  { "id": "bar_2", "name": "The North Tavern (Shyambazar)", "lat": 22.5990, "lng": 88.3700, "category": "bar" },
-  { "id": "bar_3", "name": "Olypub (Park Street)", "lat": 22.5535, "lng": 88.3522, "category": "bar" }
+  {
+    "id": "p1", "name": "Deshapriya Park", "category": "pandal", "lat": 22.5175, "lng": 88.3582,
+    "theme": "Thousand Hands of Durga (Traditional)", "crowd_hours": "Peak: 8 PM - 2 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p2", "name": "Mudiali Club", "category": "pandal", "lat": 22.5113, "lng": 88.3475,
+    "theme": "Sonar Kella (Golden Fortress)", "crowd_hours": "Peak: 7 PM - 1 AM", "nearest_metro": "Rabindra Sarobar"
+  },
+  {
+    "id": "p3", "name": "Singhi Park", "category": "pandal", "lat": 22.5193, "lng": 88.3639,
+    "theme": "Narayan Temple of Rajasthan", "crowd_hours": "Peak: 9 PM - 3 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p4", "name": "Bagbazar Sarbojonin", "category": "pandal", "lat": 22.6025, "lng": 88.3675,
+    "theme": "Traditional Ekchala Protima", "crowd_hours": "Peak: 10 PM - 4 AM", "nearest_metro": "Shyambazar"
+  },
+  {
+    "id": "p5", "name": "Kumartuli Park", "category": "pandal", "lat": 22.5990, "lng": 88.3620,
+    "theme": "Space and Universe", "crowd_hours": "Peak: 8 PM - 2 AM", "nearest_metro": "Shobhabazar"
+  },
+  {
+    "id": "p6", "name": "Sreebhumi Sporting Club", "category": "pandal", "lat": 22.6045, "lng": 88.4010,
+    "theme": "Vatican City Replica", "crowd_hours": "Insane Crowd: 6 PM - 4 AM", "nearest_metro": "Bidhannagar"
+  },
+  {
+    "id": "p7", "name": "Suruchi Sangha", "category": "pandal", "lat": 22.5200, "lng": 88.3295,
+    "theme": "Folk Arts of Bengal", "crowd_hours": "Peak: 7 PM - 2 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p8", "name": "Chetla Agrani", "category": "pandal", "lat": 22.5188, "lng": 88.3375,
+    "theme": "Eco-Friendly Village", "crowd_hours": "Peak: 8 PM - 1 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p9", "name": "Tridhara Sammilani", "category": "pandal", "lat": 22.5165, "lng": 88.3530,
+    "theme": "Tribal Heritage", "crowd_hours": "Peak: 9 PM - 2 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p10", "name": "Santosh Mitra Square", "category": "pandal", "lat": 22.5645, "lng": 88.3625,
+    "theme": "Las Vegas Sphere", "crowd_hours": "Insane Crowd: 8 PM - 4 AM", "nearest_metro": "Central"
+  },
+  {
+    "id": "pol1", "name": "Gariahat Police Kiosk", "category": "police", "lat": 22.5170, "lng": 88.3630,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  },
+  {
+    "id": "t1", "name": "Deshapriya Public Toilet", "category": "toilet", "lat": 22.5180, "lng": 88.3585,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  },
+  {
+    "id": "v1", "name": "Haldiram's", "category": "veg_restaurant", "lat": 22.5190, "lng": 88.3610,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  },
+  {
+    "id": "nv1", "name": "Arsalan (Park Circus)", "category": "nonveg_restaurant", "lat": 22.5405, "lng": 88.3655,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  }
 ]
