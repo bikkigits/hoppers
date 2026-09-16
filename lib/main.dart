@@ -4,9 +4,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart'; // Naya add hua (kIsWeb check ke liye)
+import 'package:flutter/foundation.dart'; 
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js; // Naya add hua (PWA Install call ke liye)
+import 'dart:js' as js; 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -69,7 +69,7 @@ class _SmoothMarqueeWidgetState extends State<SmoothMarqueeWidget> with SingleTi
   }
 }
 
-// Particle-based Celebration / Star Shower Overlay
+// FIX 1: Particle-based Celebration Overlay - Now falls from top to bottom
 class CelebrationOverlay extends StatefulWidget {
   const CelebrationOverlay({super.key});
   @override
@@ -84,14 +84,16 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    for (int i = 0; i < 30; i++) {
+    // THE FIX: Changed seconds: 2.5 to milliseconds: 2500
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 2500)); 
+    for (int i = 0; i < 40; i++) { 
       _particles.add({
         'x': _random.nextDouble() * 400 - 200, 
-        'y': -(_random.nextDouble() * 400 + 200),
+        'startY': -50.0 - (_random.nextDouble() * 100), 
+        'endY': 600.0 + (_random.nextDouble() * 300), 
         'icon': _random.nextBool() ? '🎉' : '✨',
         'size': _random.nextDouble() * 20 + 15,
-        'delay': _random.nextDouble(),
+        'delay': _random.nextDouble() * 0.5, 
       });
     }
     _controller.forward();
@@ -105,23 +107,27 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Stack(
-          alignment: Alignment.center,
-          children: _particles.map((p) {
-            double progress = (_controller.value - p['delay']).clamp(0.0, 1.0);
-            return Transform.translate(
-              offset: Offset(p['x'] * progress, p['y'] * progress * 1.5 + (MediaQuery.of(context).size.height / 2)),
-              child: Opacity(
-                opacity: 1.0 - progress,
-                child: Text(p['icon'], style: TextStyle(fontSize: p['size'])),
-              ),
-            );
-          }).toList(),
-        );
-      },
+    return IgnorePointer( 
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Stack(
+            alignment: Alignment.topCenter,
+            children: _particles.map((p) {
+              double progress = (_controller.value - p['delay']).clamp(0.0, 1.0);
+              double currentY = p['startY'] + (p['endY'] - p['startY']) * progress;
+              
+              return Transform.translate(
+                offset: Offset(p['x'], currentY),
+                child: Opacity(
+                  opacity: progress > 0.8 ? (1.0 - ((progress - 0.8) * 5)) : (progress < 0.1 ? progress * 10 : 1.0),
+                  child: Text(p['icon'], style: TextStyle(fontSize: p['size'])),
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
     );
   }
 }
@@ -191,7 +197,7 @@ class _MapScreenState extends State<MapScreen> {
 
   final Map<String, Map<String, String>> _dict = {
     'en': {
-      'app_title': 'Hoppers Pujo Guide', 'all': 'All', 'pandals': 'Pandals', 'police': 'Police',
+      'app_title': 'Hoppers', 'all': 'All', 'pandals': 'Pandals', 'police': 'Police',
       'toilets': 'Toilets', 'parking': 'Parking', 'bars': 'Bars', 'veg_food': 'Veg Food', 'nonveg_food': 'Non-Veg', 'gates': 'Gates',
       'suggest': 'Suggest Pandal', 'visited': 'Visited', 'mark_visited': 'Mark as Visited', 'undo_visited': 'Visited (Tap to Undo)',
       'close': 'Close', 'category': 'Category', 'meters': 'meters away', 'km': 'km away', 'unknown_dist': 'Distance unknown',
@@ -211,7 +217,7 @@ class _MapScreenState extends State<MapScreen> {
       'update': 'Update', 'report_crowd': 'Report Current Crowd', 'thanks_report': 'Thanks! Your report helps the Hopper community.',
     },
     'hi': {
-      'app_title': 'हॉपर्स पूजा गाइड', 'all': 'सभी', 'pandals': 'पंडाल', 'police': 'पुलिस',
+      'app_title': 'हॉपर्स', 'all': 'सभी', 'pandals': 'पंडाल', 'police': 'पुलिस',
       'toilets': 'शौचालय', 'parking': 'पार्किंग', 'bars': 'बार', 'veg_food': 'शाकाहारी खाना', 'nonveg_food': 'मांसाहारी', 'gates': 'गेट',
       'suggest': 'पंडाल सुझाएं', 'visited': 'देखे गए', 'mark_visited': 'गए हुए मार्क करें', 'undo_visited': 'देखा गया (हटाने के लिए टैप करें)',
       'close': 'बंद करें', 'category': 'श्रेणी', 'meters': 'मीटर दूर', 'km': 'किमी दूर', 'unknown_dist': 'दूरी अज्ञात',
@@ -231,7 +237,7 @@ class _MapScreenState extends State<MapScreen> {
       'update': 'अपडेट', 'report_crowd': 'भीड़ की रिपोर्ट करें', 'thanks_report': 'धन्यवाद! आपकी रिपोर्ट से समुदाय को मदद मिलेगी।',
     },
     'bn': {
-      'app_title': 'হপার্স পুজো গাইড', 'all': 'সব', 'pandals': 'প্যান্ডেল', 'police': 'পুলিশ',
+      'app_title': 'হপার্স', 'all': 'সব', 'pandals': 'প্যান্ডেল', 'police': 'পুলিশ',
       'toilets': 'শৌচালয়', 'parking': 'পার্কিং', 'bars': 'বার', 'veg_food': 'নিরামিষ খাবার', 'nonveg_food': 'আমিষ', 'gates': 'গেট',
       'suggest': 'প্যান্ডেল সাজেস্ট করুন', 'visited': 'ঘুরেছি', 'mark_visited': 'ঘুরেছি মার্ক করুন', 'undo_visited': 'ঘুরেছি (আনডু করতে ট্যাপ করুন)',
       'close': 'বন্ধ করুন', 'category': 'বিভাগ', 'meters': 'মিটার দূরে', 'km': 'কিমি দূরে', 'unknown_dist': 'দূরত্ব অজানা',
@@ -327,7 +333,9 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _setLanguage(String langCode) async {
     final prefs = await SharedPreferences.getInstance();
     if (!mounted) return; 
-    setState(() { _currentLang = langCode; });
+    setState(() { 
+        _currentLang = langCode; 
+    });
     prefs.setString('language', langCode);
     Navigator.pop(context);
     _filterAndBuildMarkers(); 
@@ -443,24 +451,28 @@ class _MapScreenState extends State<MapScreen> {
         return (dist / 1000) <= _searchRadiusKm;
       }).toList();
     }
+    
     setState(() {
       _mapMarkers = displayList.map((item) {
         final String id = item['id'];
         final String cat = item['category'];
         final bool isVisited = _visitedPandals.contains(id);
+        
+        double markerSize = (cat == 'pandal') ? 55.0 : 40.0;
+        double iconSize = (cat == 'pandal') ? 28.0 : 20.0;
 
         return Marker(
           point: LatLng(item['lat'], item['lng']),
-          width: 55, height: 55, alignment: Alignment.topCenter,
+          width: markerSize, height: markerSize, alignment: Alignment.topCenter,
           child: GestureDetector(
             onTap: () => _showLocationDetails(item),
             child: Container(
               decoration: BoxDecoration(
                 color: _getColorForCategory(cat, isVisited), shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2.5),
-                boxShadow: [BoxShadow(color: _getColorForCategory(cat, isVisited).withValues(alpha: 0.5), blurRadius: 8, spreadRadius: 2)],
+                border: Border.all(color: Colors.white, width: 2.0),
+                boxShadow: [BoxShadow(color: _getColorForCategory(cat, isVisited).withValues(alpha: 0.5), blurRadius: 6, spreadRadius: 1)],
               ),
-              child: Icon(isVisited && cat == 'pandal' ? Icons.check : _getIconForCategory(cat), color: Colors.white, size: 28),
+              child: Icon(isVisited && cat == 'pandal' ? Icons.check : _getIconForCategory(cat), color: Colors.white, size: iconSize),
             ),
           ),
         );
@@ -470,7 +482,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void _triggerCelebration() {
     setState(() { _showCelebration = true; });
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
       if (mounted) setState(() { _showCelebration = false; });
     });
   }
@@ -558,7 +570,7 @@ class _MapScreenState extends State<MapScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(color: Colors.orange.shade50, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange.shade200)),
@@ -570,38 +582,38 @@ class _MapScreenState extends State<MapScreen> {
                               Expanded(child: Text('${getText('category')}: ${category.toUpperCase()}', style: const TextStyle(fontWeight: FontWeight.bold))),
                             ]),
                             if (theme.isNotEmpty) ...[
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 10),
                               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 const Icon(Icons.palette, size: 18, color: Colors.deepOrange), const SizedBox(width: 8),
-                                Expanded(child: Text('${getText('theme')}: $theme', style: const TextStyle(fontWeight: FontWeight.w600))),
+                                Expanded(child: Text('${getText('theme')}: $theme', style: const TextStyle(fontWeight: FontWeight.w600, height: 1.3))),
                               ]),
                             ],
                             if (nearestMetro.isNotEmpty) ...[
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 10),
                               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 const Icon(Icons.subway, size: 18, color: Colors.blue), const SizedBox(width: 8),
                                 Expanded(child: Text('${getText('nearest_metro')}: $nearestMetro', style: const TextStyle(fontWeight: FontWeight.w600))),
                               ]),
                             ],
                             if (category == 'pandal') ...[
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 12),
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start, 
+                                crossAxisAlignment: CrossAxisAlignment.center, 
                                 children: [
                                   const Icon(Icons.people, size: 18, color: Colors.red), 
                                   const SizedBox(width: 8),
-                                  Expanded(child: Text(displayCrowd, style: TextStyle(fontWeight: FontWeight.bold, color: displayCrowd.contains('Wait') || displayCrowd.contains('Insane') || displayCrowd.contains('Peak') ? Colors.red : Colors.black87))),
+                                  Expanded(child: Text(displayCrowd, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: displayCrowd.contains('Wait') || displayCrowd.contains('Insane') || displayCrowd.contains('Peak') ? Colors.red : Colors.black87))),
                                   const SizedBox(width: 8),
                                   InkWell(
                                     onTap: () { Navigator.pop(context); _showCrowdReportDialog(name); },
                                     borderRadius: BorderRadius.circular(12),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                                       decoration: BoxDecoration(color: Colors.red.shade50, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.red.shade300)),
                                       child: Row(
                                         children: [
                                           const Icon(Icons.update, size: 12, color: Colors.red), const SizedBox(width: 4),
-                                          Text(getText('update'), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red)),
+                                          Text(getText('update'), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.red)),
                                         ],
                                       )
                                     ),
@@ -724,37 +736,46 @@ class _MapScreenState extends State<MapScreen> {
     if (!mounted) return;
     showModalBottomSheet(
       context: context, backgroundColor: Colors.transparent,
+      isScrollControlled: true, 
       builder: (context) {
         return Container(
           margin: const EdgeInsets.all(16), padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 15)]),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.download_rounded, color: Colors.deepOrange, size: 40),
-              const SizedBox(height: 10),
-              const Text('Install Hoppers App 🚀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              const Text('Add Hoppers to your home screen for offline access and a full-screen native experience!', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: Colors.black87)),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.shade300)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(children: [Text('🍏', style: TextStyle(fontSize: 16)), SizedBox(width: 6), Text('iPhone / Safari:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))]),
-                    const SizedBox(height: 4),
-                    RichText(text: TextSpan(style: const TextStyle(color: Colors.black87, fontSize: 13, fontFamily: 'Poppins'), children: [const TextSpan(text: 'Tap the Share icon '), WidgetSpan(child: Icon(Icons.ios_share, size: 16, color: Colors.blue.shade700)), const TextSpan(text: ' at the bottom and select "Add to Home Screen".')])),
-                    const Divider(height: 20),
-                    const Row(children: [Text('🤖', style: TextStyle(fontSize: 16)), SizedBox(width: 6), Text('Android / Chrome:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))]),
-                    const SizedBox(height: 4),
-                    const Text('Tap the 3 dots ⋮ at the top right and select "Install App".', style: TextStyle(fontSize: 13, color: Colors.black87)),
-                  ],
+          child: SingleChildScrollView( 
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.download_rounded, color: Colors.deepOrange, size: 40),
+                const SizedBox(height: 10),
+                const Text('Install Hoppers App 🚀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                const Text('Add Hoppers to your home screen for offline access and a full-screen native experience!', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: Colors.black87)),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.shade300)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(children: [Text('🍏', style: TextStyle(fontSize: 16)), SizedBox(width: 6), Text('iPhone / Safari:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))]),
+                      const SizedBox(height: 4),
+                      RichText(text: TextSpan(style: const TextStyle(color: Colors.black87, fontSize: 13, fontFamily: 'Poppins'), children: [const TextSpan(text: 'Tap the Share icon '), WidgetSpan(child: Icon(Icons.ios_share, size: 16, color: Colors.blue.shade700)), const TextSpan(text: ' at the bottom and select "Add to Home Screen".')])),
+                      const Divider(height: 20),
+                      const Row(children: [Text('🤖', style: TextStyle(fontSize: 16)), SizedBox(width: 6), Text('Android / Chrome:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))]),
+                      const SizedBox(height: 4),
+                      const Text('Tap the 3 dots ⋮ at the top right and select "Install App".', style: TextStyle(fontSize: 13, color: Colors.black87)),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 15),
-              SizedBox(width: double.infinity, child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Maybe Later', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold))))
-            ],
+                const SizedBox(height: 15),
+                SizedBox(
+                  width: double.infinity, 
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context), 
+                    child: const Text('Maybe Later', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16))
+                  )
+                )
+              ],
+            ),
           ),
         );
       }
@@ -930,7 +951,18 @@ class _MapScreenState extends State<MapScreen> {
                       onChanged: (val) => setDialogState(() { selectedTo = val; routeResult = ''; }),
                     ),
                     const SizedBox(height: 15),
-                    if (routeResult.isNotEmpty) Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(8)), child: Text(routeResult, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, height: 1.4)))
+                    if (routeResult.isNotEmpty) Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(8)), child: Text(routeResult, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, height: 1.4))),
+                    if (routeResult.isNotEmpty) Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: TextButton.icon(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Visual Metro Routing coming in Phase 2!')));
+                        }, 
+                        icon: const Icon(Icons.map), 
+                        label: const Text('Show on Map')
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -1057,29 +1089,32 @@ class _MapScreenState extends State<MapScreen> {
               backgroundColor: Colors.white,
               title: Text(getText('suggest')),
               content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(getText('suggest_desc'), style: const TextStyle(fontSize: 13)),
-                    const SizedBox(height: 15),
-                    TextField(controller: nameController, decoration: InputDecoration(labelText: getText('pandal_name'), border: const OutlineInputBorder())),
-                    const SizedBox(height: 15),
-                    Text(_userLocation != null ? '📍 Location: ${_userLocation!.latitude.toStringAsFixed(4)}, ${_userLocation!.longitude.toStringAsFixed(4)}' : '⚠️ Fetching GPS...', style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 15),
-                    OutlinedButton.icon(
-                      onPressed: () async {
-                        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                        if (image != null) setDialogState(() { selectedImage = image; });
-                      },
-                      icon: const Icon(Icons.photo_camera, color: Colors.deepOrange),
-                      label: Text(selectedImage == null ? getText('attach_photo') : getText('photo_attached')),
-                    ),
-                    if (selectedImage != null) ...[
-                      const SizedBox(height: 5),
-                      Text('File: ${selectedImage!.name}', style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600)),
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(getText('suggest_desc'), style: const TextStyle(fontSize: 13)),
+                      const SizedBox(height: 15),
+                      TextField(controller: nameController, decoration: InputDecoration(labelText: getText('pandal_name'), border: const OutlineInputBorder())),
+                      const SizedBox(height: 15),
+                      Text(_userLocation != null ? '📍 Location: ${_userLocation!.latitude.toStringAsFixed(4)}, ${_userLocation!.longitude.toStringAsFixed(4)}' : '⚠️ Fetching GPS...', style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 15),
+                      OutlinedButton.icon(
+                        onPressed: () async {
+                          final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                          if (image != null) setDialogState(() { selectedImage = image; });
+                        },
+                        icon: const Icon(Icons.photo_camera, color: Colors.deepOrange),
+                        label: Text(selectedImage == null ? getText('attach_photo') : getText('photo_attached')),
+                      ),
+                      if (selectedImage != null) ...[
+                        const SizedBox(height: 5),
+                        Text('File: ${selectedImage!.name}', style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600)),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
               actions: [
@@ -1144,6 +1179,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        titleSpacing: 0, 
         title: Row(
           children: [
             GestureDetector(onTap: _showProfileDialog, child: CircleAvatar(backgroundColor: Colors.white, child: Text(_userAvatar, style: const TextStyle(fontSize: 18)))),
@@ -1158,7 +1194,6 @@ class _MapScreenState extends State<MapScreen> {
           IconButton(icon: const Icon(Icons.sos, color: Colors.white, size: 28), onPressed: _showEmergencySheet),
         ],
       ),
-      // --- NAYA DRAWER CODE YAHAN ADD KIYA HAI ---
       drawer: Drawer(
         child: Column(
           children: [
@@ -1175,14 +1210,13 @@ class _MapScreenState extends State<MapScreen> {
               decoration: const BoxDecoration(color: Colors.deepOrange),
             ),
             
-            // Phase 1 Gamification Integration in Drawer
             ListTile(
               leading: const Icon(Icons.local_fire_department, color: Colors.orange),
               title: Text('Daily Streak', style: TextStyle(color: Colors.grey.shade800)),
               trailing: Text('$_dailyStreak 🔥', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               onTap: () {
                 Navigator.pop(context); 
-                _showProfileDialog(); // Opens passport/badges popup
+                _showProfileDialog(); 
               },
             ),
             
@@ -1196,33 +1230,31 @@ class _MapScreenState extends State<MapScreen> {
               },
             ),
             
-            const Spacer(), // Baaki items upar aur Install button ko niche push karega
+            const Spacer(), 
             const Divider(),
             
-            // PWA Install Button
             ListTile(
               leading: const Icon(Icons.install_mobile, color: Colors.green),
               title: const Text(
-                'Install Hoppers App',
+                'Add to Homescreen',
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
               ),
               subtitle: const Text(
-                'Faster access from homescreen',
+                'Get the full app experience',
                 style: TextStyle(fontSize: 12),
               ),
               onTap: () {
-                // 1. Drawer ko close karo browser prompt ke liye
                 Navigator.pop(context); 
                 
-                // 2. JS function call karo
                 if (kIsWeb) {
                   try {
                     bool isAvailable = js.context.callMethod('promptPwaInstall') as bool;
                     if (!isAvailable) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: const Text('App might already be installed, or try using Chrome/Safari options to "Add to Homescreen".'),
-                          backgroundColor: Colors.red.shade700,
+                          content: const Text('Looks like Hoppers is already installed, or your browser requires manual installation (Try Share > Add to Homescreen).'),
+                          backgroundColor: Colors.deepOrange.shade700,
+                          duration: const Duration(seconds: 4),
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
@@ -1238,7 +1270,6 @@ class _MapScreenState extends State<MapScreen> {
           ],
         ),
       ),
-      // --- DRAWER CODE KHATAM ---
       body: Stack(
         children: [
           Column(
@@ -1299,11 +1330,9 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ],
           ),
-          if (_showCelebration)
+          if (_showCelebration) 
             const Positioned.fill(
-              child: IgnorePointer(
-                child: CelebrationOverlay(),
-              ),
+              child: CelebrationOverlay(),
             ),
         ],
       ),
