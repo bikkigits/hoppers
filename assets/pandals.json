@@ -1,0 +1,58 @@
+[
+  {
+    "id": "p1", "name": "Deshapriya Park", "category": "pandal", "lat": 22.5175, "lng": 88.3582,
+    "theme": "Thousand Hands of Durga (Traditional)", "crowd_hours": "Peak: 8 PM - 2 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p2", "name": "Mudiali Club", "category": "pandal", "lat": 22.5113, "lng": 88.3475,
+    "theme": "Sonar Kella (Golden Fortress)", "crowd_hours": "Peak: 7 PM - 1 AM", "nearest_metro": "Rabindra Sarobar"
+  },
+  {
+    "id": "p3", "name": "Singhi Park", "category": "pandal", "lat": 22.5193, "lng": 88.3639,
+    "theme": "Narayan Temple of Rajasthan", "crowd_hours": "Peak: 9 PM - 3 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p4", "name": "Bagbazar Sarbojonin", "category": "pandal", "lat": 22.6025, "lng": 88.3675,
+    "theme": "Traditional Ekchala Protima", "crowd_hours": "Peak: 10 PM - 4 AM", "nearest_metro": "Shyambazar"
+  },
+  {
+    "id": "p5", "name": "Kumartuli Park", "category": "pandal", "lat": 22.5990, "lng": 88.3620,
+    "theme": "Space and Universe", "crowd_hours": "Peak: 8 PM - 2 AM", "nearest_metro": "Shobhabazar"
+  },
+  {
+    "id": "p6", "name": "Sreebhumi Sporting Club", "category": "pandal", "lat": 22.6045, "lng": 88.4010,
+    "theme": "Vatican City Replica", "crowd_hours": "Insane Crowd: 6 PM - 4 AM", "nearest_metro": "Bidhannagar"
+  },
+  {
+    "id": "p7", "name": "Suruchi Sangha", "category": "pandal", "lat": 22.5200, "lng": 88.3295,
+    "theme": "Folk Arts of Bengal", "crowd_hours": "Peak: 7 PM - 2 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p8", "name": "Chetla Agrani", "category": "pandal", "lat": 22.5188, "lng": 88.3375,
+    "theme": "Eco-Friendly Village", "crowd_hours": "Peak: 8 PM - 1 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p9", "name": "Tridhara Sammilani", "category": "pandal", "lat": 22.5165, "lng": 88.3530,
+    "theme": "Tribal Heritage", "crowd_hours": "Peak: 9 PM - 2 AM", "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "p10", "name": "Santosh Mitra Square", "category": "pandal", "lat": 22.5645, "lng": 88.3625,
+    "theme": "Las Vegas Sphere", "crowd_hours": "Insane Crowd: 8 PM - 4 AM", "nearest_metro": "Central"
+  },
+  {
+    "id": "pol1", "name": "Gariahat Police Kiosk", "category": "police", "lat": 22.5170, "lng": 88.3630,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  },
+  {
+    "id": "t1", "name": "Deshapriya Public Toilet", "category": "toilet", "lat": 22.5180, "lng": 88.3585,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  },
+  {
+    "id": "v1", "name": "Haldiram's", "category": "veg_restaurant", "lat": 22.5190, "lng": 88.3610,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  },
+  {
+    "id": "nv1", "name": "Arsalan (Park Circus)", "category": "nonveg_restaurant", "lat": 22.5405, "lng": 88.3655,
+    "theme": "", "crowd_hours": "", "nearest_metro": ""
+  }
+]
