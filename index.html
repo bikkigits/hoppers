@@ -108,6 +108,38 @@
     });
   </script>
 
+  <!-- PWA Install Handling Script -->
+  <script>
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent Chrome from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later via the Drawer
+      deferredPrompt = e;
+      console.log("Hoppers PWA: Install prompt stashed and ready.");
+    });
+
+    // This function will be called from Dart/Flutter
+    function promptPwaInstall() {
+      if (deferredPrompt !== null) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('Hoppers PWA: User accepted the A2HS prompt');
+          } else {
+            console.log('Hoppers PWA: User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+        return true; 
+      } else {
+        console.log("Hoppers PWA: Install prompt not available.");
+        return false;
+      }
+    }
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
