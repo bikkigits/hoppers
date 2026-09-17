@@ -3,10 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/foundation.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'package:flutter/services.dart'; // REQUIRED FOR rootBundle
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -35,8 +32,6 @@ class WeatherEngine {
   }
 
   static WeatherType getCurrentWeather() {
-    // For demonstration of your awesome idea: Randomly simulating rain/thunder sometimes 
-    // Currently forced to 'thunderstorm' to showcase the effect!
     return WeatherType.thunderstorm; 
   }
 }
@@ -129,7 +124,6 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   }
 }
 
-// ⚡ Masha Allah Lightning & Rain Overlay!
 class WeatherOverlay extends StatefulWidget {
   final WeatherType weatherType;
   const WeatherOverlay({super.key, required this.weatherType});
@@ -721,11 +715,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _showCrowdReportDialog(String pandalName) {
-    showDialog(context: context, builder: (ctx) { return AlertDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), backgroundColor: Colors.white, title: Text(getText('report_crowd'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)), content: Column(mainAxisSize: MainAxisSize.min, children: [Text(pandalName, style: const TextStyle(color: Color(0xFFD84315), fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 15), ListTile(leading: const Icon(Icons.circle, color: Colors.green, size: 24), title: Text(getText('crowd_low'), style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(ctx); _submitCrowdReport(); }), ListTile(leading: const Icon(Icons.circle, color: Colors.amber, size: 24), title: Text(getText('crowd_mod'), style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(ctx); _submitCrowdReport(); }), ListTile(leading: const Icon(Icons.local_fire_department, color: Colors.red, size: 28), title: Text(getText('crowd_peak'), style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(ctx); _submitCrowdReport(); })])); });
+    showDialog(context: context, builder: (ctx) { return AlertDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), backgroundColor: Colors.white, title: Text(getText('report_crowd'), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)), content: Column(mainAxisSize: MainAxisSize.min, children: [Text(pandalName, style: const TextStyle(color: const Color(0xFFD84315), fontWeight: FontWeight.bold, fontSize: 14)), const SizedBox(height: 15), ListTile(leading: const Icon(Icons.circle, color: Colors.green, size: 24), title: Text(getText('crowd_low'), style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(ctx); _submitCrowdReport(); }), ListTile(leading: const Icon(Icons.circle, color: Colors.amber, size: 24), title: Text(getText('crowd_mod'), style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(ctx); _submitCrowdReport(); }), ListTile(leading: const Icon(Icons.local_fire_department, color: Colors.red, size: 28), title: Text(getText('crowd_peak'), style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(ctx); _submitCrowdReport(); })])); });
   }
 
   void _submitCrowdReport() { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getText('thanks_report'), style: const TextStyle(fontWeight: FontWeight.bold)), backgroundColor: Colors.green.shade700, behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))); }
 
+  // FIX 1: PWA Install Prompt Added Back
   void _showInstallPrompt() async {
     final prefs = await SharedPreferences.getInstance(); prefs.setBool('seen_install_prompt', true); if (!mounted) return;
     showModalBottomSheet(context: context, backgroundColor: Colors.transparent, isScrollControlled: true, builder: (context) { return Container(margin: const EdgeInsets.all(16), padding: const EdgeInsets.all(24), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 15)]), child: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [const Icon(Icons.download_rounded, color: Color(0xFFD84315), size: 40), const SizedBox(height: 10), const Text('Install Hoppers App 🚀', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), const SizedBox(height: 8), const Text('Add Hoppers to your home screen for offline access and a full-screen native experience!', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: Colors.black87)), const SizedBox(height: 20), Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey.shade300)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Row(children: [Text('🍏', style: TextStyle(fontSize: 16)), SizedBox(width: 6), Text('iPhone / Safari:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))]), const SizedBox(height: 4), RichText(text: TextSpan(style: const TextStyle(color: Colors.black87, fontSize: 13, fontFamily: 'Poppins'), children: [const TextSpan(text: 'Tap the Share icon '), WidgetSpan(child: Icon(Icons.ios_share, size: 16, color: Colors.blue.shade700)), const TextSpan(text: ' at the bottom and select "Add to Home Screen".')])), const Divider(height: 20), const Row(children: [Text('🤖', style: TextStyle(fontSize: 16)), SizedBox(width: 6), Text('Android / Chrome:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))]), const SizedBox(height: 4), const Text('Tap the 3 dots ⋮ at the top right and select "Install App".', style: TextStyle(fontSize: 13, color: Colors.black87))])), const SizedBox(height: 15), SizedBox(width: double.infinity, child: TextButton(onPressed: () => Navigator.pop(context), child: const Text('Maybe Later', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16))))]))); });
@@ -757,7 +752,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void _showSuggestDialog() { 
     final TextEditingController nameController = TextEditingController(); XFile? selectedImage; final ImagePicker picker = ImagePicker();
-    showDialog(context: context, builder: (context) { return StatefulBuilder(builder: (context, setDialogState) { return AlertDialog(backgroundColor: Colors.white, title: Text(getText('suggest')), content: SingleChildScrollView(child: Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(getText('suggest_desc'), style: const TextStyle(fontSize: 13)), const SizedBox(height: 15), TextField(controller: nameController, decoration: InputDecoration(labelText: getText('pandal_name'), border: const OutlineInputBorder())), const SizedBox(height: 15), Text(_userLocation != null ? '📍 Location: ${_userLocation!.latitude.toStringAsFixed(4)}, ${_userLocation!.longitude.toStringAsFixed(4)}' : '⚠️ Fetching GPS...', style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)), const SizedBox(height: 15), OutlinedButton.icon(onPressed: () async { final XFile? image = await picker.pickImage(source: ImageSource.gallery); if (image != null) setDialogState(() { selectedImage = image; }); }, icon: const Icon(Icons.photo_camera, color: Color(0xFFD84315)), label: Text(selectedImage == null ? getText('attach_photo') : getText('photo_attached'))), if (selectedImage != null) ...[const SizedBox(height: 5), Text('File: ${selectedImage!.name}', style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600))]]))), actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text(getText('cancel'))), ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD84315), foregroundColor: Colors.white), onPressed: () { if (_userLocation == null || nameController.text.trim().isEmpty) return; Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved! "${nameController.text}" submitted.'))); }, child: Text(getText('submit')))]); }); });
+    showDialog(context: context, builder: (context) { return StatefulBuilder(builder: (context, setDialogState) { return AlertDialog(backgroundColor: Colors.white, title: Text(getText('suggest')), content: SingleChildScrollView(child: Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom), child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [Text(getText('suggest_desc'), style: const TextStyle(fontSize: 13)), const SizedBox(height: 15), TextField(controller: nameController, decoration: InputDecoration(labelText: getText('pandal_name'), border: const OutlineInputBorder())), const SizedBox(height: 15), Text(_userLocation != null ? '📍 Location: ${_userLocation!.latitude.toStringAsFixed(4)}, ${_userLocation!.longitude.toStringAsFixed(4)}' : '⚠️ Fetching GPS...', style: const TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)), const SizedBox(height: 15), OutlinedButton.icon(onPressed: () async { final XFile? image = await picker.pickImage(source: ImageSource.gallery); if (image != null) setDialogState(() { selectedImage = image; }); }, icon: const Icon(Icons.photo_camera, color: const Color(0xFFD84315)), label: Text(selectedImage == null ? getText('attach_photo') : getText('photo_attached'))), if (selectedImage != null) ...[const SizedBox(height: 5), Text('File: ${selectedImage!.name}', style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600))]]))), actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text(getText('cancel'))), ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD84315), foregroundColor: Colors.white), onPressed: () { if (_userLocation == null || nameController.text.trim().isEmpty) return; Navigator.pop(context); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Saved! "${nameController.text}" submitted.'))); }, child: Text(getText('submit')))]); }); });
   }
 
   void _showLanguageSheet() { 
@@ -801,9 +796,9 @@ class _MapScreenState extends State<MapScreen> {
           children: [
             UserAccountsDrawerHeader(accountName: Text(_userName, style: const TextStyle(fontWeight: FontWeight.bold)), accountEmail: Text('Hopper ID: $_uniqueHopperId'), currentAccountPicture: CircleAvatar(backgroundColor: Colors.white, child: Text(_userAvatar, style: const TextStyle(fontSize: 24))), decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color(0xFFD84315), Color(0xFFFF8A65)]))),
             ListTile(leading: const Icon(Icons.local_fire_department, color: Colors.orange), title: Text('Daily Streak', style: TextStyle(color: Colors.grey.shade800)), trailing: Text('$_dailyStreak 🔥', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)), onTap: () { Navigator.pop(context); _showProfileDialog(); }),
-            ListTile(leading: const Icon(Icons.military_tech, color: Color(0xFFD84315)), title: Text('My Badges', style: TextStyle(color: Colors.grey.shade800)), trailing: Text('${_visitedPandals.length} Visited', style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(context); _showProfileDialog(); }),
+            ListTile(leading: const Icon(Icons.military_tech, color: const Color(0xFFD84315)), title: Text('My Badges', style: TextStyle(color: Colors.grey.shade800)), trailing: Text('${_visitedPandals.length} Visited', style: const TextStyle(fontWeight: FontWeight.bold)), onTap: () { Navigator.pop(context); _showProfileDialog(); }),
             const Spacer(), const Divider(),
-            ListTile(leading: const Icon(Icons.install_mobile, color: Colors.green), title: const Text('Add to Homescreen', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)), subtitle: const Text('Get the full app experience', style: TextStyle(fontSize: 12)), onTap: () { Navigator.pop(context); /* PWA Logic */ }), const SizedBox(height: 20),
+            ListTile(leading: const Icon(Icons.install_mobile, color: Colors.green), title: const Text('Add to Homescreen', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)), subtitle: const Text('Get the full app experience', style: TextStyle(fontSize: 12)), onTap: () { Navigator.pop(context); _showInstallPrompt(); }), const SizedBox(height: 20),
           ],
         ),
       ),
@@ -852,7 +847,7 @@ class _MapScreenState extends State<MapScreen> {
                       shrinkWrap: true, itemCount: _searchResults.length,
                       itemBuilder: (context, index) {
                         var item = _searchResults[index];
-                        return ListTile(leading: const Icon(Icons.temple_hindu, color: Color(0xFFD84315)), title: Text(item['name'], style: TextStyle(color: isNight ? Colors.white : Colors.black87, fontWeight: FontWeight.bold)), subtitle: Text(item['theme'] ?? '', style: TextStyle(fontSize: 11, color: isNight ? Colors.white54 : Colors.grey.shade600), maxLines: 1, overflow: TextOverflow.ellipsis), onTap: () { FocusScope.of(context).unfocus(); _searchController.clear(); _mapController.move(LatLng(item['lat'], item['lng']), 16.0); _showLocationDetails(item); });
+                        return ListTile(leading: const Icon(Icons.temple_hindu, color: const Color(0xFFD84315)), title: Text(item['name'], style: TextStyle(color: isNight ? Colors.white : Colors.black87, fontWeight: FontWeight.bold)), subtitle: Text(item['theme'] ?? '', style: TextStyle(fontSize: 11, color: isNight ? Colors.white54 : Colors.grey.shade600), maxLines: 1, overflow: TextOverflow.ellipsis), onTap: () { FocusScope.of(context).unfocus(); _searchController.clear(); _mapController.move(LatLng(item['lat'], item['lng']), 16.0); _showLocationDetails(item); });
                       },
                     ),
                   ),
