@@ -219,14 +219,6 @@ class CachedTileProvider extends TileProvider {
   }
 }
 
-class InvertColorMatrix {
-  static const List<double> darkFilter = [
-    -1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0,
-  ];
-  static const List<double> dimFilter = [
-    0.6, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 1, 0,
-  ];
-}
 
 class PandalTrail {
   final String id, titleKey, descKey; 
@@ -1016,12 +1008,18 @@ class _MapScreenState extends State<MapScreen> {
           FlutterMap(
             mapController: _mapController, options: const MapOptions(initialCenter: LatLng(22.5650, 88.3620), initialZoom: 12.5), 
             children: [
-              ColorFiltered(colorFilter: isNight ? const ColorFilter.matrix(InvertColorMatrix.darkFilter) : (isGoldenHour ? const ColorFilter.matrix(InvertColorMatrix.dimFilter) : const ColorFilter.mode(Colors.transparent, BlendMode.multiply)), child: TileLayer(urlTemplate: tileUrl, userAgentPackageName: 'com.bikki.hoppers', tileProvider: CachedTileProvider())),
+              // 1. Raw Tile Layer (0% Lag, Pure Performance)
+              TileLayer(urlTemplate: tileUrl, userAgentPackageName: 'com.bikki.hoppers', tileProvider: CachedTileProvider()),
+              
+              // 2. The Smart Tint (Subdue Logic - Over the map, Under the markers)
+              if (isNight) IgnorePointer(child: Container(color: Colors.black.withOpacity(0.55))),
+              if (isGoldenHour) IgnorePointer(child: Container(color: Colors.deepOrange.withOpacity(0.15))),
+
+              // 3. Trails & Markers (Inke upar tint nahi aayega, yeh chamakte rahenge!)
               if (_activeTrail != null) PolylineLayer(polylines: [Polyline(points: _activeTrail!.points, strokeWidth: 6.0, color: _activeTrail!.color)]),
               MarkerLayer(markers: [..._mapMarkers, if (_userLocation != null) Marker(point: _userLocation!, width: 25, height: 25, child: Container(decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 3), boxShadow: const [BoxShadow(color: Colors.blueAccent, blurRadius: 10)])))])
             ],
           ),
-          if (isGoldenHour) IgnorePointer(child: Container(color: Colors.orange.withOpacity(0.15))),
           WeatherOverlay(weatherType: _currentWeather),
 
           SafeArea(
