@@ -37,7 +37,6 @@ class WeatherEngine {
 // -------------------------------------------------------------
 // UI WIDGETS
 // -------------------------------------------------------------
-
 class SmoothMarqueeWidget extends StatefulWidget {
   final Widget child;
   const SmoothMarqueeWidget({super.key, required this.child});
@@ -48,7 +47,6 @@ class SmoothMarqueeWidget extends StatefulWidget {
 class _SmoothMarqueeWidgetState extends State<SmoothMarqueeWidget> with SingleTickerProviderStateMixin {
   late ScrollController _scrollController;
   late Ticker _ticker;
-
   @override
   void initState() {
     super.initState();
@@ -66,14 +64,12 @@ class _SmoothMarqueeWidgetState extends State<SmoothMarqueeWidget> with SingleTi
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => _ticker.start());
   }
-
   @override
   void dispose() { 
     _ticker.dispose(); 
     _scrollController.dispose(); 
     super.dispose(); 
   }
-
   @override
   Widget build(BuildContext context) { 
     return SingleChildScrollView(physics: const NeverScrollableScrollPhysics(), scrollDirection: Axis.horizontal, controller: _scrollController, child: widget.child); 
@@ -90,7 +86,6 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   late AnimationController _controller;
   final Random _random = Random();
   final List<Map<String, dynamic>> _particles = [];
-
   @override
   void initState() {
     super.initState();
@@ -109,7 +104,6 @@ class _CelebrationOverlayState extends State<CelebrationOverlay> with SingleTick
   }
   @override
   void dispose() { _controller.dispose(); super.dispose(); }
-
   @override
   Widget build(BuildContext context) {
     return IgnorePointer( 
@@ -148,7 +142,6 @@ class _WeatherOverlayState extends State<WeatherOverlay> with TickerProviderStat
   late AnimationController _lightningController;
   final Random _random = Random();
   final List<Map<String, dynamic>> _raindrops = [];
-
   @override
   void initState() {
     super.initState();
@@ -159,7 +152,6 @@ class _WeatherOverlayState extends State<WeatherOverlay> with TickerProviderStat
     _lightningController = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     if (widget.weatherType == WeatherType.thunderstorm) _triggerLightning();
   }
-
   void _triggerLightning() async {
     if (!mounted || widget.weatherType != WeatherType.thunderstorm) return;
     await Future.delayed(Duration(seconds: _random.nextInt(10) + 5)); 
@@ -167,10 +159,8 @@ class _WeatherOverlayState extends State<WeatherOverlay> with TickerProviderStat
     _lightningController.forward(from: 0.0);
     _triggerLightning();
   }
-
   @override
   void dispose() { _rainController.dispose(); _lightningController.dispose(); super.dispose(); }
-
   @override
   Widget build(BuildContext context) {
     if (widget.weatherType == WeatherType.clear) return const SizedBox.shrink();
@@ -219,7 +209,6 @@ class CachedTileProvider extends TileProvider {
   }
 }
 
-
 class PandalTrail {
   final String id, titleKey, descKey; 
   final Color color; 
@@ -267,7 +256,6 @@ class _MapScreenState extends State<MapScreen> {
   
   PandalTrail? _activeTrail;
   bool _hasSeenInstallPrompt = false;
-
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> _searchResults = [];
   bool _isSearching = false;
@@ -279,9 +267,7 @@ class _MapScreenState extends State<MapScreen> {
     PandalTrail('south_1', 'south_trail', 'trail_desc_south', Colors.blue, true, [const LatLng(22.5175, 88.3582), const LatLng(22.5193, 88.3639), const LatLng(22.5113, 88.3475)]),
     PandalTrail('north_1', 'north_trail', 'trail_desc_north', Colors.purple, true, [const LatLng(22.6025, 88.3675), const LatLng(22.5990, 88.3620), const LatLng(22.5940, 88.3590)])
   ];
-
   String _currentLang = 'en';
-
   final Map<String, Map<String, String>> _dict = {
     'en': {
       'app_title': 'Hoppers', 'all': 'All', 'pandals': 'Pandals', 'police': 'Police',
@@ -305,12 +291,9 @@ class _MapScreenState extends State<MapScreen> {
       'search_hint': 'Find your hopping destiny...', 'search_empty': 'No pandals found.',
     }
   };
-
   String getText(String key) => _dict[_currentLang]?[key] ?? _dict['en']![key]!;
-
   String _selectedCategory = 'pandal';
   final double _searchRadiusKm = 50.0; 
-
   final List<String> _blueLine = ['Dakshineswar', 'Baranagar', 'Noapara', 'Dum Dum', 'Belgachia', 'Shyambazar', 'Shobhabazar Sutanuti', 'Girish Park', 'Mahatma Gandhi Road', 'Central', 'Chandni Chowk', 'Esplanade', 'Park Street', 'Maidan', 'Rabindra Sadan', 'Netaji Bhavan', 'Jatin Das Park', 'Kalighat', 'Rabindra Sarobar', 'Mahanayak Uttam Kumar', 'Netaji', 'Masterda Surya Sen', 'Gitanjali', 'Kavi Nazrul', 'Shahid Khudiram', 'Kavi Subhash'];
   final List<String> _greenLineWest = ['Howrah Maidan', 'Howrah', 'Mahakaran', 'Esplanade'];
   final List<String> _greenLineEast = ['Sealdah', 'Phoolbagan', 'Salt Lake Stadium', 'Bengal Chemical', 'City Centre', 'Central Park', 'Karunamoyee', 'Salt Lake Sector V'];
@@ -329,7 +312,6 @@ class _MapScreenState extends State<MapScreen> {
     _allStations = [..._blueLine, ..._greenLineWest, ..._greenLineEast, ..._orangeLine, ..._purpleLine].toSet().toList()..sort(); 
     
     _searchController.addListener(_onSearchChanged);
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final prefs = await SharedPreferences.getInstance();
       _hasSeenInstallPrompt = prefs.getBool('seen_install_prompt') ?? false;
@@ -385,9 +367,8 @@ class _MapScreenState extends State<MapScreen> {
     if (!mounted) return; 
     String lastDateStr = prefs.getString('last_open_date') ?? ''; 
     DateTime now = DateTime.now(); 
-    String todayStr = "${now.year}-${now.month}-${now.day}"; 
+    String todayStr = "now.year-{now.month}-${now.day}"; 
     int savedStreak = prefs.getInt('daily_streak') ?? 1;
-
     if (lastDateStr.isNotEmpty && lastDateStr != todayStr) { 
       DateTime lastDate = DateTime.parse(lastDateStr); 
       DateTime today = DateTime(now.year, now.month, now.day); 
@@ -398,7 +379,6 @@ class _MapScreenState extends State<MapScreen> {
     
     prefs.setString('last_open_date', todayStr); 
     prefs.setInt('daily_streak', savedStreak);
-
     setState(() { 
       _userName = prefs.getString('user_name') ?? 'Pujo Hopper'; 
       _userAvatar = prefs.getString('user_avatar') ?? '🥳'; 
@@ -452,12 +432,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _launchMapsUrl(double lat, double lng) async { 
-    final url = 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking'; 
+    final url = 'https://www.google.com/maps/dir/?api=1&destination=lat,lng&travelmode=walking'; 
     if (await canLaunchUrl(Uri.parse(url))) await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication); 
   }
 
   Future<void> _shareOnWhatsApp(String pandalName, double lat, double lng) async { 
-    String message = getText('share_text').replaceAll('{pandal}', pandalName).replaceAll('{url}', 'https://www.google.com/maps/search/?api=1&query=$lat,$lng'); 
+    String message = getText('share_text').replaceAll('{pandal}', pandalName).replaceAll('{url}', 'https://www.google.com/maps/search/?api=1&query=lat,lng'); 
     final url = "https://wa.me/?text=${Uri.encodeComponent(message)}"; 
     if (await canLaunchUrl(Uri.parse(url))) await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication); 
   }
@@ -527,7 +507,6 @@ class _MapScreenState extends State<MapScreen> {
   void _filterAndBuildMarkers() {
     List<dynamic> displayList = _rawLocations;
     if (_selectedCategory != 'all') displayList = displayList.where((item) => item['category'] == _selectedCategory).toList(); 
-
     if (_userLocation != null) { 
       displayList = displayList.where((item) { 
         String cat = item['category']; 
@@ -545,7 +524,6 @@ class _MapScreenState extends State<MapScreen> {
         bool isNight = _currentTimeType == TimeOfDayType.night; 
         double markerSize = (cat == 'pandal') ? 55.0 : 40.0; 
         double iconSize = (cat == 'pandal') ? 28.0 : 20.0;
-
         return Marker(
           point: LatLng(item['lat'], item['lng']), 
           width: markerSize, height: markerSize, alignment: Alignment.topCenter,
@@ -598,7 +576,6 @@ class _MapScreenState extends State<MapScreen> {
     String crowdHours = item['crowd_hours'] ?? ''; 
     String nearestMetro = item['nearest_metro'] ?? ''; 
     String displayCrowd = crowdHours.isNotEmpty ? crowdHours : dynamicCrowd;
-
     showModalBottomSheet(
       context: context, backgroundColor: Colors.transparent, isScrollControlled: true,
       builder: (context) {
@@ -828,33 +805,38 @@ class _MapScreenState extends State<MapScreen> {
               ), 
               actions: [
                 TextButton(onPressed: () => Navigator.pop(context), child: Text(getText('close'))), 
-ElevatedButton(
-  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white), 
-  onPressed: () { 
-    if (selectedFrom != null && selectedTo != null) { 
-      setDialogState(() { 
-        // Agar dono stations same hain
-        if (selectedFrom == selectedTo) {
-          routeResult = 'Aap already is station par hain! Alag station chunein.';
-        } 
-        // Asli routing logic
-        else {
-          String routeText = 'Board at $selectedFrom\n   ↓\n';
-          
-          // Dummy Interchange condition (Agar lines alag hain)
-          if ((selectedFrom == 'Central Park' || selectedFrom == 'City Centre') && 
-              (selectedTo != 'Central Park' && selectedTo != 'City Centre')) {
-            routeText += 'Change line at Esplanade (Interchange)\n   ↓\n';
-          }
-          
-          routeText += 'Alight at $selectedTo';
-          routeResult = routeText; // Final string UI ko bhej di
-        }
-      }); 
-    } 
-  }, 
-  child: Text(getText('find_route'))
-)              ]
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white),
+                  onPressed: () {
+                    if (selectedFrom != null && selectedTo != null) {
+                      setDialogState(() {
+                        if (selectedFrom == selectedTo) {
+                          routeResult = '⚠ Aap already is station par hain!';
+                        } else {
+                          // Smart Metro Line Brain
+                          List<String> greenLine = ['Sector V', 'Karunamoyee', 'Central Park', 'City Centre', 'Bengal Chemical', 'Salt Lake Stadium', 'Phoolbagan', 'Sealdah', 'Esplanade', 'Howrah', 'Howrah Maidan'];
+                          List<String> blueLine = ['Dakshineswar', 'Dum Dum', 'Shyambazar', 'MG Road', 'Central', 'Chandni Chowk', 'Esplanade', 'Park Street', 'Kalighat', 'Rabindra Sarobar', 'Kavi Subhash'];
+
+                          bool fromGreen = greenLine.contains(selectedFrom);
+                          bool toGreen = greenLine.contains(selectedTo);
+                          bool fromBlue = blueLine.contains(selectedFrom);
+                          bool toBlue = blueLine.contains(selectedTo);
+
+                          // Output Formatting
+                          if (fromGreen && toGreen) {
+                            routeResult = 'ⓘ Direct train on Green Line (East-West).\n📍 Board at $selectedFrom and drop at $selectedTo.';
+                          } else if (fromBlue && toBlue) {
+                            routeResult = 'ⓘ Direct train on Blue Line (North-South).\n📍 Board at $selectedFrom and drop at $selectedTo.';
+                          } else {
+                            routeResult = '📍 Board at $selectedFrom\n🔄 Change line at Esplanade (Interchange)\n📍 Alight at $selectedTo';
+                          }
+                        }
+                      });
+                    }
+                  },
+                  child: Text(getText('find_route')),
+                )
+              ]
             ); 
           }
         ); 
@@ -887,7 +869,6 @@ ElevatedButton(
     );
   }
 
-  // --- MISSING FUNCTION RESTORED ---
   void _showEmergencySheet() { 
     showModalBottomSheet(
       context: context, 
@@ -978,9 +959,39 @@ ElevatedButton(
             mainAxisSize: MainAxisSize.min, 
             children: [
               Text(getText('choose_lang'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)), const Divider(), 
-              ListTile(leading: const Text('🇬🇧', style: TextStyle(fontSize: 24)), title: const Text('English', style: TextStyle(fontWeight: FontWeight.bold)), trailing: _currentLang == 'en' ? const Icon(Icons.check, color: Colors.green) : null, onTap: () => _setLanguage('en')), 
-              ListTile(leading: const Text('🇮🇳', style: TextStyle(fontSize: 24)), title: const Text('हिंदी (Hindi)', style: TextStyle(fontWeight: FontWeight.bold)), trailing: _currentLang == 'hi' ? const Icon(Icons.check, color: Colors.green) : null, onTap: () => _setLanguage('hi')), 
-              ListTile(leading: const Text('🇮🇳', style: TextStyle(fontSize: 24)), title: const Text('বাংলা (Bengali)', style: TextStyle(fontWeight: FontWeight.bold)), trailing: _currentLang == 'bn' ? const Icon(Icons.check, color: Colors.green) : null, onTap: () => _setLanguage('bn'))
+              ListTile(
+                leading: const Text('🇬🇧', style: TextStyle(fontSize: 24)),
+                title: const Text('English', style: TextStyle(fontWeight: FontWeight.bold)),
+                trailing: _currentLang == 'en' ? const Icon(Icons.check, color: Colors.green) : null,
+                onTap: () async {
+                  Navigator.pop(context); // 1. Sheet turant band
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('language', 'en');
+                  setState(() { _currentLang = 'en'; }); // 2. Main app turant translate
+                },
+              ),
+              ListTile(
+                leading: const Text('🇮🇳', style: TextStyle(fontSize: 24)),
+                title: const Text('हिंदी (Hindi)', style: TextStyle(fontWeight: FontWeight.bold)),
+                trailing: _currentLang == 'hi' ? const Icon(Icons.check, color: Colors.green) : null,
+                onTap: () async {
+                  Navigator.pop(context);
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('language', 'hi');
+                  setState(() { _currentLang = 'hi'; });
+                },
+              ),
+              ListTile(
+                leading: const Text('🇮🇳', style: TextStyle(fontSize: 24)),
+                title: const Text('বাংলা (Bengali)', style: TextStyle(fontWeight: FontWeight.bold)),
+                trailing: _currentLang == 'bn' ? const Icon(Icons.check, color: Colors.green) : null,
+                onTap: () async {
+                  Navigator.pop(context);
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('language', 'bn');
+                  setState(() { _currentLang = 'bn'; });
+                },
+              ),
             ]
           )
         ); 
@@ -1008,7 +1019,6 @@ ElevatedButton(
     bool isNight = _currentTimeType == TimeOfDayType.night;
     bool isGoldenHour = _currentTimeType == TimeOfDayType.goldenHour;
     String tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'; 
-
     return Scaffold(
       extendBodyBehindAppBar: true, 
       appBar: AppBar(
@@ -1039,14 +1049,12 @@ ElevatedButton(
               // 2. The Smart Tint (Subdue Logic - Over the map, Under the markers)
               if (isNight) IgnorePointer(child: Container(color: Colors.black.withOpacity(0.55))),
               if (isGoldenHour) IgnorePointer(child: Container(color: Colors.deepOrange.withOpacity(0.15))),
-
               // 3. Trails & Markers (Inke upar tint nahi aayega, yeh chamakte rahenge!)
               if (_activeTrail != null) PolylineLayer(polylines: [Polyline(points: _activeTrail!.points, strokeWidth: 6.0, color: _activeTrail!.color)]),
               MarkerLayer(markers: [..._mapMarkers, if (_userLocation != null) Marker(point: _userLocation!, width: 25, height: 25, child: Container(decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle, border: Border.all(color: Colors.white, width: 3), boxShadow: const [BoxShadow(color: Colors.blueAccent, blurRadius: 10)])))])
             ],
           ),
           WeatherOverlay(weatherType: _currentWeather),
-
           SafeArea(
             child: Column(
               children: [
