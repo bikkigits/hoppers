@@ -19,6 +19,132 @@ void main() {
 }
 
 // -------------------------------------------------------------
+// NEW SMART METRO ROUTER SERVICE (OFFLINE)
+// -------------------------------------------------------------
+enum MetroLine { blue, green }
+
+class MetroStation {
+  final String id;
+  final String name;
+  final double lat;
+  final double lng;
+  final List<MetroLine> lines;
+  final String gateInfo;
+  const MetroStation({required this.id, required this.name, required this.lat, required this.lng, required this.lines, this.gateInfo = 'Gate 1 / Main Entrance'});
+}
+
+class MetroRouteResult {
+  final MetroStation startStation;
+  final MetroStation destStation;
+  final double walkToStartKm;
+  final double walkFromDestKm;
+  final List<MetroStation> routePath;
+  final String? interchangeStation;
+  final int totalStations;
+  final int estimatedTimeMins;
+  final int estimatedFare;
+  final List<String> instructions;
+
+  MetroRouteResult({required this.startStation, required this.destStation, required this.walkToStartKm, required this.walkFromDestKm, required this.routePath, this.interchangeStation, required this.totalStations, required this.estimatedTimeMins, required this.estimatedFare, required this.instructions});
+}
+
+class MetroRouterService {
+  static const List<MetroStation> masterStations = [
+    // Blue Line
+    MetroStation(id: 'dakshineswar', name: 'Dakshineswar', lat: 22.6547, lng: 88.3582, lines: [MetroLine.blue], gateInfo: 'Gate 1 (Temple Side)'),
+    MetroStation(id: 'baranagar', name: 'Baranagar', lat: 22.6450, lng: 88.3680, lines: [MetroLine.blue]),
+    MetroStation(id: 'noapara', name: 'Noapara', lat: 22.6378, lng: 88.3792, lines: [MetroLine.blue]),
+    MetroStation(id: 'dumdum', name: 'Dum Dum', lat: 22.6219, lng: 88.3789, lines: [MetroLine.blue]),
+    MetroStation(id: 'belgachia', name: 'Belgachia', lat: 22.6062, lng: 88.3801, lines: [MetroLine.blue]),
+    MetroStation(id: 'shyambazar', name: 'Shyambazar', lat: 22.6001, lng: 88.3698, lines: [MetroLine.blue], gateInfo: 'Five Point Crossing'),
+    MetroStation(id: 'shovabazar', name: 'Shovabazar Sutanuti', lat: 22.5950, lng: 88.3585, lines: [MetroLine.blue]),
+    MetroStation(id: 'girish_park', name: 'Girish Park', lat: 22.5855, lng: 88.3592, lines: [MetroLine.blue]),
+    MetroStation(id: 'mg_road', name: 'Mahatma Gandhi Road', lat: 22.5802, lng: 88.3598, lines: [MetroLine.blue]),
+    MetroStation(id: 'central', name: 'Central', lat: 22.5698, lng: 88.3602, lines: [MetroLine.blue]),
+    MetroStation(id: 'chandni_chowk', name: 'Chandni Chowk', lat: 22.5655, lng: 88.3580, lines: [MetroLine.blue]),
+    MetroStation(id: 'esplanade', name: 'Esplanade', lat: 22.5645, lng: 88.3518, lines: [MetroLine.blue, MetroLine.green], gateInfo: 'Interchange Complex'),
+    MetroStation(id: 'park_street', name: 'Park Street', lat: 22.5540, lng: 88.3512, lines: [MetroLine.blue]),
+    MetroStation(id: 'maidan', name: 'Maidan', lat: 22.5475, lng: 88.3490, lines: [MetroLine.blue]),
+    MetroStation(id: 'rabindra_sadan', name: 'Rabindra Sadan', lat: 22.5380, lng: 88.3482, lines: [MetroLine.blue]),
+    MetroStation(id: 'kalighat', name: 'Kalighat', lat: 22.5180, lng: 88.3468, lines: [MetroLine.blue], gateInfo: 'Gate 3 (Rashbehari Ave)'),
+    MetroStation(id: 'tollygunge', name: 'Mahanayak Uttam Kumar', lat: 22.4938, lng: 88.3485, lines: [MetroLine.blue]),
+    MetroStation(id: 'kavi_subhash', name: 'Kavi Subhash', lat: 22.4712, lng: 88.3970, lines: [MetroLine.blue]),
+    
+    // Green Line
+    MetroStation(id: 'howrah_maidan', name: 'Howrah Maidan', lat: 22.5780, lng: 88.3280, lines: [MetroLine.green]),
+    MetroStation(id: 'howrah', name: 'Howrah Station', lat: 22.5842, lng: 88.3420, lines: [MetroLine.green], gateInfo: 'Subway Exit'),
+    MetroStation(id: 'mahakaran', name: 'Mahakaran', lat: 22.5710, lng: 88.3480, lines: [MetroLine.green]),
+    MetroStation(id: 'sealdah', name: 'Sealdah', lat: 22.5670, lng: 88.3710, lines: [MetroLine.green]),
+    MetroStation(id: 'phoolbagan', name: 'Phoolbagan', lat: 22.5725, lng: 88.3880, lines: [MetroLine.green]),
+    MetroStation(id: 'saltlake_stadium', name: 'Salt Lake Stadium', lat: 22.5710, lng: 88.4020, lines: [MetroLine.green]),
+    MetroStation(id: 'bengal_chemical', name: 'Bengal Chemical', lat: 22.5732, lng: 88.4098, lines: [MetroLine.green]),
+    MetroStation(id: 'city_centre', name: 'City Centre', lat: 22.5815, lng: 88.4125, lines: [MetroLine.green]),
+    MetroStation(id: 'karunamoyee', name: 'Karunamoyee', lat: 22.5862, lng: 88.4190, lines: [MetroLine.green]),
+    MetroStation(id: 'sector_v', name: 'Salt Lake Sector V', lat: 22.5820, lng: 88.4310, lines: [MetroLine.green]),
+  ];
+
+  static double _calculateDistanceKm(double lat1, double lon1, double lat2, double lon2) {
+    const double r = 6371;
+    final double dLat = (lat2 - lat1) * (pi / 180);
+    final double dLon = (lon2 - lon1) * (pi / 180);
+    final double a = sin(dLat / 2) * sin(dLat / 2) + cos(lat1 * (pi / 180)) * cos(lat2 * (pi / 180)) * sin(dLon / 2) * sin(dLon / 2);
+    return r * (2 * atan2(sqrt(a), sqrt(1 - a)));
+  }
+
+  static MetroStation findNearestStation(double lat, double lng) {
+    return masterStations.reduce((a, b) => _calculateDistanceKm(lat, lng, a.lat, a.lng) < _calculateDistanceKm(lat, lng, b.lat, b.lng) ? a : b);
+  }
+
+  static List<MetroStation> _getLinearPath(MetroStation from, MetroStation to, MetroLine line) {
+    final List<MetroStation> lineStations = masterStations.where((s) => s.lines.contains(line)).toList();
+    final int fromIdx = lineStations.indexWhere((s) => s.id == from.id);
+    final int toIdx = lineStations.indexWhere((s) => s.id == to.id);
+    if (fromIdx == -1 || toIdx == -1) return [from, to];
+    return fromIdx < toIdx ? lineStations.sublist(fromIdx, toIdx + 1) : lineStations.sublist(toIdx, fromIdx + 1).reversed.toList();
+  }
+
+  static MetroRouteResult calculateMetroRoute(MetroStation startStation, MetroStation destStation) {
+    if (startStation.id == destStation.id) {
+      return MetroRouteResult(startStation: startStation, destStation: destStation, walkToStartKm: 0, walkFromDestKm: 0, routePath: [startStation], totalStations: 0, estimatedTimeMins: 0, estimatedFare: 0, instructions: ['Destination is at the same station.']);
+    }
+
+    final List<MetroLine> commonLines = startStation.lines.where((l) => destStation.lines.contains(l)).toList();
+    List<MetroStation> routePath = [];
+    String? interchange;
+    List<String> instructions = [];
+
+    if (commonLines.isNotEmpty) {
+      final activeLine = commonLines.first;
+      routePath = _getLinearPath(startStation, destStation, activeLine);
+      instructions.add('Board ${activeLine == MetroLine.blue ? 'Blue Line' : 'Green Line'} at ${startStation.name}.');
+      instructions.add('Travel ${routePath.length - 1} stations directly to ${destStation.name}.');
+    } else {
+      final esplanade = masterStations.firstWhere((s) => s.id == 'esplanade');
+      interchange = esplanade.name;
+      final line1 = startStation.lines.first;
+      final line2 = destStation.lines.first;
+      final leg1 = _getLinearPath(startStation, esplanade, line1);
+      final leg2 = _getLinearPath(esplanade, destStation, line2);
+      routePath = [...leg1, ...leg2.skip(1)];
+      instructions.add('Board ${line1 == MetroLine.blue ? 'Blue Line' : 'Green Line'} at ${startStation.name}.');
+      instructions.add('Change line at Esplanade (Interchange).');
+      instructions.add('Switch to ${line2 == MetroLine.blue ? 'Blue Line' : 'Green Line'} towards ${destStation.name}.');
+    }
+
+    final totalStations = routePath.length - 1;
+    final totalTime = interchange != null ? (totalStations * 2.5).round() + 6 : (totalStations * 2.5).round();
+    int fare = 5;
+    if (totalStations > 2 && totalStations <= 5) fare = 10;
+    else if (totalStations > 5 && totalStations <= 10) fare = 15;
+    else if (totalStations > 10) fare = 20;
+
+    instructions.add('🌙 Night Alert: Services run till 4:00 AM (Saptami-Navami).');
+    
+    return MetroRouteResult(startStation: startStation, destStation: destStation, walkToStartKm: 0, walkFromDestKm: 0, routePath: routePath, interchangeStation: interchange, totalStations: totalStations, estimatedTimeMins: totalTime, estimatedFare: fare, instructions: instructions);
+  }
+}
+
+// -------------------------------------------------------------
 // WEATHER & TIME LOGIC
 // -------------------------------------------------------------
 enum TimeOfDayType { day, goldenHour, night }
@@ -289,17 +415,53 @@ class _MapScreenState extends State<MapScreen> {
       'share_text': "Let's check out {pandal} tonight! Navigate here on Hoppers: {url}",
       'update': 'Update', 'report_crowd': 'Report Current Crowd', 'thanks_report': 'Thanks! Your report helps the Hopper community.',
       'search_hint': 'Find your hopping destiny...', 'search_empty': 'No pandals found.',
+    },
+    'hi': {
+      'app_title': 'Hoppers', 'all': 'सभी', 'pandals': 'पंडाल', 'police': 'पुलिस',
+      'toilets': 'शौचालय', 'parking': 'पार्किंग', 'bars': 'बार', 'veg_food': 'शाकाहारी', 'nonveg_food': 'मांसाहारी', 'gates': 'गेट',
+      'suggest': 'पंडाल सुझाव दें', 'visited': 'देखे गए', 'mark_visited': 'देखा गया मार्क करें', 'undo_visited': 'देखा गया (हटाने के लिए टैप करें)',
+      'close': 'बंद करें', 'category': 'श्रेणी', 'meters': 'मीटर दूर', 'km': 'किमी दूर', 'unknown_dist': 'दूरी अज्ञात',
+      'passport': 'हॉपर पासपोर्ट', 'achievements': 'उपलब्धियां', 'cancel': 'रद्द करें', 'save': 'सेव करें',
+      'emergency': 'आपातकालीन हेल्पलाइन', 'transit': 'यात्रा गाइड', 'find_route': 'रास्ता खोजें', 'from_stn': 'कहाँ से (स्टेशन)', 'to_stn': 'कहाँ तक (स्टेशन)',
+      'open_router': 'स्मार्ट मेट्रो राउटर खोलें', 'choose_lang': 'भाषा चुनें', 'women_help': 'महिला हेल्पलाइन', 'ambulance': 'मेडिकल और एम्बुलेंस',
+      'suggest_desc': 'लाइव कैमरा का उपयोग करके फोटो लें और अनलिस्टेड पंडाल मैप करें!',
+      'pandal_name': 'पंडाल का नाम', 'submit': 'रिव्यू के लिए भेजें', 'attach_photo': 'लाइव फोटो लें (अनिवार्य)', 'photo_attached': 'फोटो संलग्न है!',
+      'traffic_alert': '⚠️ लाइव केपी ट्रैफिक अपडेट और नो-एंट्री का समय जल्द ही यहां अपडेट किया जाएगा।',
+      'kp_advisory_title': '🚓 कोलकाता पुलिस ट्रैफिक एडवाइजरी', 'kp_advisory_desc': 'आधिकारिक दिशानिर्देशों की प्रतीक्षा है।',
+      'trails': 'रास्ते', 'clear_trail': 'रास्ता हटाएं', 'south_trail': 'साउथ हेरिटेज वॉक', 'north_trail': 'नॉर्थ क्लासिक वॉक',
+      'trail_desc_south': 'देशप्रिया ➔ सिंही पार्क ➔ मुदियाली', 'trail_desc_north': 'बागबाजार ➔ कुमारतुली ➔ अहीरीटोला',
+      'one_way': '⛔ केवल एकतरफा (ONE-WAY)', 'one_way_desc': 'पुलिस बैरिकेड्स सक्रिय हैं। क्रम का पालन करें, पीछे न जाएं!',
+      'crowd_peak': 'भारी भीड़ (1-2 घंटे इंतज़ार)', 'crowd_mod': 'मध्यम भीड़ (चलने लायक)', 'crowd_low': 'कम भीड़ (सबसे अच्छा समय)',
+      'take_me_there': 'मुझे वहां ले चलो', 'share_whatsapp': 'WhatsApp पर शेयर करें', 'theme': 'थीम', 'nearest_metro': 'निकटतम मेट्रो',
+      'share_text': "चलो आज रात {pandal} चलते हैं! Hoppers पर नेविगेट करें: {url}",
+      'update': 'अपडेट', 'report_crowd': 'भीड़ की रिपोर्ट करें', 'thanks_report': 'धन्यवाद! आपकी रिपोर्ट से समुदाय को मदद मिलेगी।',
+      'search_hint': 'अपनी मंजिल खोजें...', 'search_empty': 'कोई पंडाल नहीं मिला.',
+    },
+    'bn': {
+      'app_title': 'Hoppers', 'all': 'সব', 'pandals': 'প্যান্ডেল', 'police': 'পুলিশ',
+      'toilets': 'শৌচালয়', 'parking': 'পার্কিং', 'bars': 'বার', 'veg_food': 'নিরামিষ', 'nonveg_food': 'আমিষ', 'gates': 'গেট',
+      'suggest': 'প্যান্ডেল সাজেস্ট করুন', 'visited': 'দর্শন করা হয়েছে', 'mark_visited': 'দর্শন করা হিসেবে মার্ক করুন', 'undo_visited': 'দর্শন করা হয়েছে (আনডু করতে ট্যাপ করুন)',
+      'close': 'বন্ধ করুন', 'category': 'বিভাগ', 'meters': 'মিটার দূরে', 'km': 'কিমি দূরে', 'unknown_dist': 'দূরত্ব অজানা',
+      'passport': 'হপার পাসপোর্ট', 'achievements': 'অর্জন', 'cancel': 'বাতিল', 'save': 'সেভ করুন',
+      'emergency': 'জরুরী হেল্পলাইন', 'transit': 'ট্রানজিট গাইড', 'find_route': 'রুট খুঁজুন', 'from_stn': 'কোথা থেকে (স্টেশন)', 'to_stn': 'কোথায় যাবেন (স্টেশন)',
+      'open_router': 'স্মার্ট মেট্রো রাউটার খুলুন', 'choose_lang': 'ভাষা নির্বাচন করুন', 'women_help': 'মহিলা হেল্পলাইন', 'ambulance': 'মেডিকেল ও অ্যাম্বুলেন্স',
+      'suggest_desc': 'লাইভ ক্যামেরা ব্যবহার করে ছবি তুলুন এবং প্যান্ডেল ম্যাপ করুন!',
+      'pandal_name': 'প্যান্ডেলের নাম', 'submit': 'রিভিউয়ের জন্য পাঠান', 'attach_photo': 'লাইভ ছবি তুলুন (বাধ্যতামূলক)', 'photo_attached': 'ছবি যুক্ত করা হয়েছে!',
+      'traffic_alert': '⚠️ লাইভ কেপি ট্রাফিক আপডেট এবং নো-এন্ট্রি সময় শীঘ্রই এখানে আপডেট করা হবে।',
+      'kp_advisory_title': '🚓 কলকাতা পুলিশ ট্রাফিক অ্যাডভাইজরি', 'kp_advisory_desc': 'অফিসিয়াল গাইডলাইনের জন্য অপেক্ষা করা হচ্ছে।',
+      'trails': 'রুট', 'clear_trail': 'রুট মুছুন', 'south_trail': 'সাউথ হেরিটেজ ওয়াক', 'north_trail': 'নর্থ ক্লাসিক ওয়াক',
+      'trail_desc_south': 'দেশপ্রিয় ➔ সিংহী পার্ক ➔ মুদিয়ালি', 'trail_desc_north': 'বাগবাজার ➔ কুমারটুলি ➔ আহিরীটোলা',
+      'one_way': '⛔ শুধুমাত্র একমুখী (ONE-WAY)', 'one_way_desc': 'পুলিশ ব্যারিকেড সক্রিয়। ক্রমানুসারে চলুন, পিছনে যাবেন না!',
+      'crowd_peak': 'প্রচণ্ড ভিড় (১-২ ঘণ্টা অপেক্ষা)', 'crowd_mod': 'মাঝারি ভিড় (চলনসই)', 'crowd_low': 'কম ভিড় (সেরা সময়)',
+      'take_me_there': 'আমাকে সেখানে নিয়ে চলুন', 'share_whatsapp': 'WhatsApp-এ শেয়ার করুন', 'theme': 'থিম', 'nearest_metro': 'নিকটতম মেট্রো',
+      'share_text': "চলো আজ রাতে {pandal} দেখি! Hoppers-এ নেভিগেট করুন: {url}",
+      'update': 'আপডেট', 'report_crowd': 'ভিড়ের রিপোর্ট করুন', 'thanks_report': 'ধন্যবাদ! আপনার রিপোর্ট সম্প্রদায়কে সাহায্য করবে।',
+      'search_hint': 'আপনার গন্তব্য খুঁজুন...', 'search_empty': 'কোনো প্যান্ডেল পাওয়া যায়নি.',
     }
   };
   String getText(String key) => _dict[_currentLang]?[key] ?? _dict['en']![key]!;
   String _selectedCategory = 'pandal';
   final double _searchRadiusKm = 50.0; 
-  final List<String> _blueLine = ['Dakshineswar', 'Baranagar', 'Noapara', 'Dum Dum', 'Belgachia', 'Shyambazar', 'Shobhabazar Sutanuti', 'Girish Park', 'Mahatma Gandhi Road', 'Central', 'Chandni Chowk', 'Esplanade', 'Park Street', 'Maidan', 'Rabindra Sadan', 'Netaji Bhavan', 'Jatin Das Park', 'Kalighat', 'Rabindra Sarobar', 'Mahanayak Uttam Kumar', 'Netaji', 'Masterda Surya Sen', 'Gitanjali', 'Kavi Nazrul', 'Shahid Khudiram', 'Kavi Subhash'];
-  final List<String> _greenLineWest = ['Howrah Maidan', 'Howrah', 'Mahakaran', 'Esplanade'];
-  final List<String> _greenLineEast = ['Sealdah', 'Phoolbagan', 'Salt Lake Stadium', 'Bengal Chemical', 'City Centre', 'Central Park', 'Karunamoyee', 'Salt Lake Sector V'];
-  final List<String> _orangeLine = ['Kavi Subhash', 'Satyajit Ray', 'Jyotirindra Nandi', 'Kavi Sukanta', 'Hemanta Mukhopadhyay'];
-  final List<String> _purpleLine = ['Joka', 'Thakurpukur', 'Sakherbazar', 'Behala Chowrasta', 'Behala Bazar', 'Taratala', 'Majerhat'];
-  List<String> _allStations = [];
 
   @override
   void initState() {
@@ -309,7 +471,6 @@ class _MapScreenState extends State<MapScreen> {
     _loadUserData();
     _loadLocations();
     _startLocationUpdates();
-    _allStations = [..._blueLine, ..._greenLineWest, ..._greenLineEast, ..._orangeLine, ..._purpleLine].toSet().toList()..sort(); 
     
     _searchController.addListener(_onSearchChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -353,21 +514,12 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void dispose() { _searchController.dispose(); super.dispose(); }
 
-  String _getStationWithEmoji(String station) {
-    if (_blueLine.contains(station)) return '🔵 $station'; 
-    if (_greenLineWest.contains(station)) return '🟢 $station'; 
-    if (_greenLineEast.contains(station)) return '🟢 $station'; 
-    if (_orangeLine.contains(station)) return '🟠 $station'; 
-    if (_purpleLine.contains(station)) return '🟣 $station'; 
-    return station;
-  }
-
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     if (!mounted) return; 
     String lastDateStr = prefs.getString('last_open_date') ?? ''; 
     DateTime now = DateTime.now(); 
-    String todayStr = "now.year-{now.month}-${now.day}"; 
+    String todayStr = "${now.year}-${now.month}-${now.day}"; 
     int savedStreak = prefs.getInt('daily_streak') ?? 1;
     if (lastDateStr.isNotEmpty && lastDateStr != todayStr) { 
       DateTime lastDate = DateTime.parse(lastDateStr); 
@@ -432,12 +584,12 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _launchMapsUrl(double lat, double lng) async { 
-    final url = 'https://www.google.com/maps/dir/?api=1&destination=lat,lng&travelmode=walking'; 
+    final url = 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=walking'; 
     if (await canLaunchUrl(Uri.parse(url))) await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication); 
   }
 
   Future<void> _shareOnWhatsApp(String pandalName, double lat, double lng) async { 
-    String message = getText('share_text').replaceAll('{pandal}', pandalName).replaceAll('{url}', 'https://www.google.com/maps/search/?api=1&query=lat,lng'); 
+    String message = getText('share_text').replaceAll('{pandal}', pandalName).replaceAll('{url}', 'https://www.google.com/maps/search/?api=1&query=$lat,$lng'); 
     final url = "https://wa.me/?text=${Uri.encodeComponent(message)}"; 
     if (await canLaunchUrl(Uri.parse(url))) await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication); 
   }
@@ -785,7 +937,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _showOfflineMetroRouter() { 
-    String? selectedFrom, selectedTo; String routeResult = '';
+    MetroStation? selectedFrom, selectedTo; MetroRouteResult? result;
     showDialog(
       context: context, 
       builder: (context) { 
@@ -797,9 +949,9 @@ class _MapScreenState extends State<MapScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, 
                   children: [
-                    DropdownButtonFormField<String>(isExpanded: true, decoration: InputDecoration(labelText: getText('from_stn'), border: const OutlineInputBorder()), value: selectedFrom, items: _allStations.map((s) => DropdownMenuItem(value: s, child: Text(_getStationWithEmoji(s)))).toList(), onChanged: (val) => setDialogState(() { selectedFrom = val; routeResult = ''; })), const SizedBox(height: 10), 
-                    DropdownButtonFormField<String>(isExpanded: true, decoration: InputDecoration(labelText: getText('to_stn'), border: const OutlineInputBorder()), value: selectedTo, items: _allStations.map((s) => DropdownMenuItem(value: s, child: Text(_getStationWithEmoji(s)))).toList(), onChanged: (val) => setDialogState(() { selectedTo = val; routeResult = ''; })), const SizedBox(height: 15), 
-                    if (routeResult.isNotEmpty) Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(8)), child: Text(routeResult, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, height: 1.4)))
+                    DropdownButtonFormField<MetroStation>(isExpanded: true, decoration: InputDecoration(labelText: getText('from_stn'), border: const OutlineInputBorder()), value: selectedFrom, items: MetroRouterService.masterStations.map((s) => DropdownMenuItem(value: s, child: Text('${s.lines.contains(MetroLine.blue) ? '🔵' : '🟢'} ${s.name}'))).toList(), onChanged: (val) => setDialogState(() { selectedFrom = val; result = null; })), const SizedBox(height: 10), 
+                    DropdownButtonFormField<MetroStation>(isExpanded: true, decoration: InputDecoration(labelText: getText('to_stn'), border: const OutlineInputBorder()), value: selectedTo, items: MetroRouterService.masterStations.map((s) => DropdownMenuItem(value: s, child: Text('${s.lines.contains(MetroLine.blue) ? '🔵' : '🟢'} ${s.name}'))).toList(), onChanged: (val) => setDialogState(() { selectedTo = val; result = null; })), const SizedBox(height: 15), 
+                    if (result != null) Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(8)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('💰 Fare: ₹${result!.estimatedFare}  |  ⏳ Time: ~${result!.estimatedTimeMins} mins', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)), const Divider(), ...result!.instructions.map((inst) => Padding(padding: const EdgeInsets.only(bottom: 4), child: Text('• $inst', style: const TextStyle(fontSize: 13, height: 1.3))))]))
                   ]
                 )
               ), 
@@ -809,29 +961,7 @@ class _MapScreenState extends State<MapScreen> {
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white),
                   onPressed: () {
                     if (selectedFrom != null && selectedTo != null) {
-                      setDialogState(() {
-                        if (selectedFrom == selectedTo) {
-                          routeResult = '⚠ Aap already is station par hain!';
-                        } else {
-                          // Smart Metro Line Brain
-                          List<String> greenLine = ['Sector V', 'Karunamoyee', 'Central Park', 'City Centre', 'Bengal Chemical', 'Salt Lake Stadium', 'Phoolbagan', 'Sealdah', 'Esplanade', 'Howrah', 'Howrah Maidan'];
-                          List<String> blueLine = ['Dakshineswar', 'Dum Dum', 'Shyambazar', 'MG Road', 'Central', 'Chandni Chowk', 'Esplanade', 'Park Street', 'Kalighat', 'Rabindra Sarobar', 'Kavi Subhash'];
-
-                          bool fromGreen = greenLine.contains(selectedFrom);
-                          bool toGreen = greenLine.contains(selectedTo);
-                          bool fromBlue = blueLine.contains(selectedFrom);
-                          bool toBlue = blueLine.contains(selectedTo);
-
-                          // Output Formatting
-                          if (fromGreen && toGreen) {
-                            routeResult = 'ⓘ Direct train on Green Line (East-West).\n📍 Board at $selectedFrom and drop at $selectedTo.';
-                          } else if (fromBlue && toBlue) {
-                            routeResult = 'ⓘ Direct train on Blue Line (North-South).\n📍 Board at $selectedFrom and drop at $selectedTo.';
-                          } else {
-                            routeResult = '📍 Board at $selectedFrom\n🔄 Change line at Esplanade (Interchange)\n📍 Alight at $selectedTo';
-                          }
-                        }
-                      });
+                      setDialogState(() { result = MetroRouterService.calculateMetroRoute(selectedFrom!, selectedTo!); });
                     }
                   },
                   child: Text(getText('find_route')),
