@@ -98058,7 +98058,11 @@ $0(){var s=this.a
 if(s.b!=null&&s.a!=null)this.b.$1(new A.axR(s))},
 $S:0}
 A.axR.prototype={
-$0(){this.a.c="Route logic bypassed for brevity."},
+$0(){var s,r=this.a,q=r.b,p=r.a
+if(q==p)r.c="Aap already is station par hain! Alag station chunein."
+else{s="Board at "+A.k(q)+"\n   \u2193\n"
+if((q==="Central Park"||q==="City Centre")&&p!=="Central Park"&&p!=="City Centre")s+="Change line at Esplanade (Interchange)\n   \u2193\n"
+r.c=s+("Alight at "+A.k(p))}},
 $S:0}
 A.ayl.prototype={
 $1(a){return A.aMz(new A.ayk(this.a),!1,0.7,0.9,0.5)},
