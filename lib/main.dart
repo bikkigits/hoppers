@@ -828,8 +828,33 @@ class _MapScreenState extends State<MapScreen> {
               ), 
               actions: [
                 TextButton(onPressed: () => Navigator.pop(context), child: Text(getText('close'))), 
-                ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white), onPressed: () { if (selectedFrom != null && selectedTo != null) { setDialogState(() { routeResult = 'Route logic bypassed for brevity.'; }); } }, child: Text(getText('find_route')))
-              ]
+ElevatedButton(
+  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, foregroundColor: Colors.white), 
+  onPressed: () { 
+    if (selectedFrom != null && selectedTo != null) { 
+      setDialogState(() { 
+        // Agar dono stations same hain
+        if (selectedFrom == selectedTo) {
+          routeResult = 'Aap already is station par hain! Alag station chunein.';
+        } 
+        // Asli routing logic
+        else {
+          String routeText = 'Board at $selectedFrom\n   ↓\n';
+          
+          // Dummy Interchange condition (Agar lines alag hain)
+          if ((selectedFrom == 'Central Park' || selectedFrom == 'City Centre') && 
+              (selectedTo != 'Central Park' && selectedTo != 'City Centre')) {
+            routeText += 'Change line at Esplanade (Interchange)\n   ↓\n';
+          }
+          
+          routeText += 'Alight at $selectedTo';
+          routeResult = routeText; // Final string UI ko bhej di
+        }
+      }); 
+    } 
+  }, 
+  child: Text(getText('find_route'))
+)              ]
             ); 
           }
         ); 
