@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sample-001",
+    "name": "Sample Sarbojanin Durgotsav (Shyambazar)",
+    "theme": "Terracotta Temples of Bengal",
+    "zone": "north",
+    "lat": 22.5985,
+    "lng": 88.3723,
+    "nearestMetroId": "shyambazar",
+    "nearestMetroName": "Shyambazar",
+    "verified": true,
+    "crowdLevel": "medium"
+  },
+  {
+    "id": "sample-002",
+    "name": "Sample Yuba Sangha (Kalighat)",
+    "theme": "Handwoven Jamdani Dreams",
+    "zone": "south",
+    "lat": 22.5193,
+    "lng": 88.3426,
+    "nearestMetroId": "kalighat",
+    "nearestMetroName": "Kalighat",
+    "verified": true,
+    "crowdLevel": "insane"
+  },
+  {
+    "id": "sample-003",
+    "name": "Sample Kalibari Committee (Sealdah)",
+    "theme": "Traditional Ek-Chala",
+    "zone": "others",
+    "lat": 22.5675,
+    "lng": 88.3707,
+    "nearestMetroId": "sealdah",
+    "nearestMetroName": "Sealdah",
+    "verified": false,
+    "crowdLevel": "low"
+  },
+  {
+    "id": "sample-004",
+    "name": "Sample Sporting Club (Howrah Maidan)",
+    "theme": "Bamboo & Banana-Fibre Pavilion",
+    "zone": "howrah",
+    "lat": 22.5852,
+    "lng": 88.3105,
+    "nearestMetroId": "howrah-maidan",
+    "nearestMetroName": "Howrah Maidan",
+    "verified": true,
+    "crowdLevel": "medium"
+  },
+  {
+    "id": "sample-005",
+    "name": "Sample Milan Sangha (Salt Lake)",
+    "theme": "Recycled Glass Mosaic",
+    "zone": "east",
+    "lat": 22.5765,
+    "lng": 88.4245,
+    "nearestMetroId": "sector-v",
+    "nearestMetroName": "Salt Lake Sector V",
+    "verified": false,
+    "crowdLevel": "medium"
+  }
+]
