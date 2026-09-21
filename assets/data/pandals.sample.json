@@ -1,62 +1,457 @@
 [
   {
-    "id": "sample-001",
-    "name": "Sample Sarbojanin Durgotsav (Shyambazar)",
-    "theme": "Terracotta Temples of Bengal",
-    "zone": "north",
-    "lat": 22.5985,
-    "lng": 88.3723,
-    "nearestMetroId": "shyambazar",
-    "nearestMetroName": "Shyambazar",
-    "verified": true,
-    "crowdLevel": "medium"
+    "id": "s1",
+    "name": "Deshapriya Park Durgotsab",
+    "lat": 22.5175,
+    "lng": 88.3582,
+    "category": "pandal",
+    "theme": "Unique Theme, Largest Idol, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
   },
   {
-    "id": "sample-002",
-    "name": "Sample Yuba Sangha (Kalighat)",
-    "theme": "Handwoven Jamdani Dreams",
-    "zone": "south",
+    "id": "s2",
+    "name": "Ballygunge Cultural Association",
     "lat": 22.5193,
-    "lng": 88.3426,
-    "nearestMetroId": "kalighat",
-    "nearestMetroName": "Kalighat",
-    "verified": true,
-    "crowdLevel": "insane"
+    "lng": 88.3639,
+    "category": "pandal",
+    "theme": "Traditional, Artistic Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Rabindra Sadan"
   },
   {
-    "id": "sample-003",
-    "name": "Sample Kalibari Committee (Sealdah)",
-    "theme": "Traditional Ek-Chala",
-    "zone": "others",
-    "lat": 22.5675,
-    "lng": 88.3707,
-    "nearestMetroId": "sealdah",
-    "nearestMetroName": "Sealdah",
-    "verified": false,
-    "crowdLevel": "low"
+    "id": "s3",
+    "name": "Ekdalia Evergreen Club",
+    "lat": 22.5222,
+    "lng": 88.3665,
+    "category": "pandal",
+    "theme": "Traditional, Artistic Idol",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
   },
   {
-    "id": "sample-004",
-    "name": "Sample Sporting Club (Howrah Maidan)",
-    "theme": "Bamboo & Banana-Fibre Pavilion",
-    "zone": "howrah",
-    "lat": 22.5852,
-    "lng": 88.3105,
-    "nearestMetroId": "howrah-maidan",
-    "nearestMetroName": "Howrah Maidan",
-    "verified": true,
-    "crowdLevel": "medium"
+    "id": "s4",
+    "name": "Singhi Park Sarbojanin",
+    "lat": 22.5208,
+    "lng": 88.3661,
+    "category": "pandal",
+    "theme": "Traditional, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
   },
   {
-    "id": "sample-005",
-    "name": "Sample Milan Sangha (Salt Lake)",
-    "theme": "Recycled Glass Mosaic",
-    "zone": "east",
-    "lat": 22.5765,
-    "lng": 88.4245,
-    "nearestMetroId": "sector-v",
-    "nearestMetroName": "Salt Lake Sector V",
-    "verified": false,
-    "crowdLevel": "medium"
+    "id": "s5",
+    "name": "Tridhara Sammilani",
+    "lat": 22.519,
+    "lng": 88.359,
+    "category": "pandal",
+    "theme": "Unique Theme, Award Winning",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "s6",
+    "name": "Mudiali Club",
+    "lat": 22.5113,
+    "lng": 88.3475,
+    "category": "pandal",
+    "theme": "Unique Theme, Social Message",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "s7",
+    "name": "Badamtala Ashar Sangha",
+    "lat": 22.516,
+    "lng": 88.3465,
+    "category": "pandal",
+    "theme": "Unique Theme, Creative Pandal",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "s8",
+    "name": "66 Pally",
+    "lat": 22.517,
+    "lng": 88.346,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "s9",
+    "name": "Chetla Agrani Club",
+    "lat": 22.5173,
+    "lng": 88.337,
+    "category": "pandal",
+    "theme": "Unique Theme, Artistic",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kalighat"
+  },
+  {
+    "id": "s10",
+    "name": "Suruchi Sangha",
+    "lat": 22.502,
+    "lng": 88.334,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting, Foreign Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Mahanayak Uttam Kumar"
+  },
+  {
+    "id": "s11",
+    "name": "Behala Nutan Dal",
+    "lat": 22.493,
+    "lng": 88.318,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Behala Chowrasta"
+  },
+  {
+    "id": "s12",
+    "name": "Behala Club Sarbojanin",
+    "lat": 22.495,
+    "lng": 88.315,
+    "category": "pandal",
+    "theme": "Traditional, Unique Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Behala Bazar"
+  },
+  {
+    "id": "s13",
+    "name": "Barisha Club",
+    "lat": 22.482,
+    "lng": 88.311,
+    "category": "pandal",
+    "theme": "Unique Theme, Traditional",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Sakher Bazar"
+  },
+  {
+    "id": "s14",
+    "name": "Jodhpur Park 95 Pally",
+    "lat": 22.5065,
+    "lng": 88.3665,
+    "category": "pandal",
+    "theme": "Unique Theme, Artistic",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Rabindra Sarobar"
+  },
+  {
+    "id": "s15",
+    "name": "Selimpur Pally",
+    "lat": 22.504,
+    "lng": 88.368,
+    "category": "pandal",
+    "theme": "Unique Theme, Social Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Rabindra Sarobar"
+  },
+  {
+    "id": "s16",
+    "name": "Babubagan Club Sarbojanin",
+    "lat": 22.503,
+    "lng": 88.371,
+    "category": "pandal",
+    "theme": "Unique Theme, Artistic",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Rabindra Sarobar"
+  },
+  {
+    "id": "s17",
+    "name": "Bosepukur Sitala Mandir",
+    "lat": 22.511,
+    "lng": 88.384,
+    "category": "pandal",
+    "theme": "Unique Theme, Creative Art",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kavi Sukanta"
+  },
+  {
+    "id": "s18",
+    "name": "Bosepukur Talbagan Sarbojanin",
+    "lat": 22.512,
+    "lng": 88.386,
+    "category": "pandal",
+    "theme": "Unique Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Kavi Sukanta"
+  },
+  {
+    "id": "s19",
+    "name": "Rajdanga Naba Uday Sangha",
+    "lat": 22.515,
+    "lng": 88.393,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Jyotirindra Nandi"
+  },
+  {
+    "id": "s20",
+    "name": "Santoshpur Trikon Park",
+    "lat": 22.493,
+    "lng": 88.382,
+    "category": "pandal",
+    "theme": "Unique Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shahid Khudiram"
+  },
+  {
+    "id": "s21",
+    "name": "Santoshpur Lake Pally",
+    "lat": 22.495,
+    "lng": 88.385,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shahid Khudiram"
+  },
+  {
+    "id": "n1",
+    "name": "Bagbazar Sarbojanin Durgotsav",
+    "lat": 22.6025,
+    "lng": 88.3675,
+    "category": "pandal",
+    "theme": "Traditional, Heritage, Oldest",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shyambazar"
+  },
+  {
+    "id": "n2",
+    "name": "Kumartuli Park Sarbojanin",
+    "lat": 22.599,
+    "lng": 88.362,
+    "category": "pandal",
+    "theme": "Unique Theme, Artistic Idol",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shobhabazar Sutanuti"
+  },
+  {
+    "id": "n3",
+    "name": "Shobhabazar Rajbari Durgapuja",
+    "lat": 22.5985,
+    "lng": 88.363,
+    "category": "pandal",
+    "theme": "Bonedi Bari, Traditional",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shobhabazar Sutanuti"
+  },
+  {
+    "id": "n4",
+    "name": "Ahiritola Sarbojanin",
+    "lat": 22.594,
+    "lng": 88.359,
+    "category": "pandal",
+    "theme": "Traditional, Huge Crowd",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shobhabazar Sutanuti"
+  },
+  {
+    "id": "n5",
+    "name": "Jagat Mukherjee Park",
+    "lat": 22.601,
+    "lng": 88.368,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shyambazar"
+  },
+  {
+    "id": "n6",
+    "name": "Tala Prattay",
+    "lat": 22.607,
+    "lng": 88.375,
+    "category": "pandal",
+    "theme": "Unique Theme, Award Winning, Creative Art",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Belgachia"
+  },
+  {
+    "id": "n7",
+    "name": "Tala Barowari Durgotsav",
+    "lat": 22.608,
+    "lng": 88.376,
+    "category": "pandal",
+    "theme": "Traditional, Huge Pandal",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Belgachia"
+  },
+  {
+    "id": "n8",
+    "name": "Hatibagan Sarbojanin",
+    "lat": 22.596,
+    "lng": 88.369,
+    "category": "pandal",
+    "theme": "Traditional, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shyambazar"
+  },
+  {
+    "id": "n9",
+    "name": "Hatibagan Nabin Pally",
+    "lat": 22.595,
+    "lng": 88.37,
+    "category": "pandal",
+    "theme": "Unique Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shyambazar"
+  },
+  {
+    "id": "n10",
+    "name": "Nalin Sarkar Street Sarbojanin",
+    "lat": 22.597,
+    "lng": 88.368,
+    "category": "pandal",
+    "theme": "Traditional, Artistic",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Shobhabazar Sutanuti"
+  },
+  {
+    "id": "n11",
+    "name": "Manicktala Chaltabagan Lohapatty",
+    "lat": 22.585,
+    "lng": 88.371,
+    "category": "pandal",
+    "theme": "Traditional, Lighting",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Girish Park"
+  },
+  {
+    "id": "n12",
+    "name": "College Square Sarbojanin",
+    "lat": 22.575,
+    "lng": 88.363,
+    "category": "pandal",
+    "theme": "Lighting, Lake Reflection, Traditional",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Mahatma Gandhi Road"
+  },
+  {
+    "id": "n13",
+    "name": "Mohammad Ali Park Durgotsav",
+    "lat": 22.578,
+    "lng": 88.358,
+    "category": "pandal",
+    "theme": "Lighting, Traditional",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Central"
+  },
+  {
+    "id": "n14",
+    "name": "Santosh Mitra Square (Lebutala Park)",
+    "lat": 22.57,
+    "lng": 88.365,
+    "category": "pandal",
+    "theme": "Lighting, Unique Theme, Celebrity Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Sealdah"
+  },
+  {
+    "id": "n15",
+    "name": "Kashi Bose Lane Durga Puja",
+    "lat": 22.588,
+    "lng": 88.366,
+    "category": "pandal",
+    "theme": "Traditional",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Girish Park"
+  },
+  {
+    "id": "e1",
+    "name": "Sreebhumi Sporting Club",
+    "lat": 22.605,
+    "lng": 88.4,
+    "category": "pandal",
+    "theme": "Unique Theme, Lighting, Theme Replica",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Belgachia"
+  },
+  {
+    "id": "e2",
+    "name": "Dum Dum Park Bharat Chakra",
+    "lat": 22.61,
+    "lng": 88.405,
+    "category": "pandal",
+    "theme": "Unique Theme, Award Winning",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Belgachia"
+  },
+  {
+    "id": "e3",
+    "name": "FD Block Sarbojanin",
+    "lat": 22.585,
+    "lng": 88.41,
+    "category": "pandal",
+    "theme": "Unique Theme, Family Crowd",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Karunamoyee"
+  },
+  {
+    "id": "e4",
+    "name": "BJ Block Sarbojanin",
+    "lat": 22.59,
+    "lng": 88.415,
+    "category": "pandal",
+    "theme": "Traditional",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Central Park"
+  },
+  {
+    "id": "w1",
+    "name": "Kidderpore 25 Pally Sarbojanin",
+    "lat": 22.535,
+    "lng": 88.32,
+    "category": "pandal",
+    "theme": "Traditional, Unique Theme",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Khidirpur"
+  },
+  {
+    "id": "w2",
+    "name": "Howrah Maidan Athletic Club",
+    "lat": 22.58,
+    "lng": 88.33,
+    "category": "pandal",
+    "theme": "Traditional, Huge Idol",
+    "crowd_hours": "Peak 8 PM - 2 AM",
+    "nearest_metro": "Howrah Maidan"
+  },
+  {
+    "id": "u1",
+    "name": "KP Control Room South",
+    "lat": 22.518,
+    "lng": 88.3585,
+    "category": "police"
+  },
+  {
+    "id": "u2",
+    "name": "Public Toilet - Kalighat",
+    "lat": 22.517,
+    "lng": 88.357,
+    "category": "toilet"
+  },
+  {
+    "id": "u3",
+    "name": "Paid Parking - Gariahat",
+    "lat": 22.52,
+    "lng": 88.365,
+    "category": "parking"
+  },
+  {
+    "id": "u4",
+    "name": "Kasturi Restaurant",
+    "lat": 22.521,
+    "lng": 88.366,
+    "category": "nonveg_restaurant"
+  },
+  {
+    "id": "u5",
+    "name": "Haldiram's",
+    "lat": 22.5165,
+    "lng": 88.347,
+    "category": "veg_restaurant"
   }
 ]
